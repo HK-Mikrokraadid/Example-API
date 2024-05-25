@@ -6,6 +6,7 @@ const postsRouter = require('./posts/postsRoutes');
 const authRouter = require('./auth/authRoutes');
 const { isLoggedIn, isAdmin } = require('./auth/authMiddleware');
 const { notFound } = require('./general/generalMiddlewares');
+const { loggingMiddleware } = require('./general/loggingMiddleware');
 
 const app = express();
 
@@ -14,6 +15,7 @@ const port = config.port || 3000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(loggingMiddleware);
 
 app.use('/login', authRouter);
 app.use(isLoggedIn);
