@@ -10,7 +10,7 @@ const getAllPosts = async (req, res) => {
 };
 
 const getPostById = async (req, res) => {
-  const { id } = req.params;
+  const id = Number(req.params.id);
   const post = await postsService.getPostById(id);
   if (!post) {
     return res.status(404).json({
@@ -25,4 +25,15 @@ const getPostById = async (req, res) => {
   });
 };
 
-module.exports = { getAllPosts, getPostById };
+const createPost = async (req, res) => {
+  const { title, body } = req.body;
+  const userId = res.locals.user.id;
+  const newPost = await postsService.createPost({ title, body, userId });
+  return res.status(201).json({
+    success: true,
+    message: 'Post created',
+    post: newPost,
+  });
+}
+
+module.exports = { getAllPosts, getPostById, createPost };
