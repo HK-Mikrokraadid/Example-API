@@ -14,7 +14,7 @@ const verifyToken = async (token) => {
     return payload;
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error(error);
+    console.error(error.message);
     return null;
   }
 };
