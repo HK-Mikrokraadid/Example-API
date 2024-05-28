@@ -15,7 +15,7 @@ API-l on kolm endpointi:
 
 ### `/login`
 
-- POST `/api/login` - logib kasutaja sisse
+- POST `/login` - logib kasutaja sisse
 
 Sisselogimiseks on vaja saata POST päring, kus on e-maili ja parooli kombinatsioon. Näide:
 
