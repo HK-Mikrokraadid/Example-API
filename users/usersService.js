@@ -3,10 +3,17 @@ const hashService = require('../general/hashService');
 
 const getUserById = async (id) => {
   const user = users.find((u) => u.id === id);
-  return user;
+  const { password, ...userToReturn } = user;
+  return userToReturn;
 };
 
-const getAllUsers = async () => users;
+const getAllUsers = async () => {
+  // return users without passwords
+  return users.map((u) => {
+    const { password, ...user } = u;
+    return user;
+  });
+};
 
 const createUser = async (user) => {
   const hashedPassword = await hashService.hashPassword(user.password);
@@ -15,7 +22,8 @@ const createUser = async (user) => {
     ...user, id, password: hashedPassword, role: 'user',
   };
   users.push(newUser);
-  return newUser.id;
+  const { password, ...createdUser } = newUser;
+  return createdUser;
 };
 
 const getUserByEmail = async (email) => {

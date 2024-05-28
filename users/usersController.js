@@ -10,7 +10,7 @@ const getAllUsers = async (req, res) => {
 };
 
 const getUserById = async (req, res) => {
-  const { id } = req.params;
+  const id = Number(req.params.id);
   const user = await usersService.getUserById(id);
   if (!user) {
     return res.status(404).json({
@@ -38,11 +38,11 @@ const createUser = async (req, res) => {
   const user = {
     firstName, lastName, email, password,
   };
-  const id = await usersService.createUser(user);
+  const createdUser = await usersService.createUser(user);
   return res.status(201).json({
     success: true,
     message: 'User created',
-    userId: id,
+    user: createdUser,
   });
 };
 
