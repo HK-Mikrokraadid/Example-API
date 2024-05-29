@@ -38,3 +38,9 @@ Vastuseks saadetakse JWT token, mida on vaja teiste päringute tegemiseks saata 
 
 - GET `/posts` - tagastab kõik postitused
 - GET `/posts/:id` - tagastab postituse ID järgi
+
+## Request files
+
+<https://kenslearningcurve.com/tutorials/test-an-api-by-using-http-files-in-vscode/>
+
+<https://github.com/Huachao/vscode-restclient>
