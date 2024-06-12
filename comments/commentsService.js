@@ -1,6 +1,12 @@
 const comments = require('./comments');
 
-const getAllComments = async () => comments;
+const getAllComments = async () => {
+  try {
+    return comments;
+  } catch (error) {
+    throw error;
+  }
+};
 
 const getCommentById = async (id) => {
   const comment = comments.find((comment) => comment.id === id);

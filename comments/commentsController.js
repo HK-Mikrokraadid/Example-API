@@ -1,12 +1,16 @@
 const commentsService = require('./commentsService');
 
-const getAllComments = async (req, res) => {
-  const comments = await commentsService.getAllComments();
-  return res.status(200).json({
-    success: true,
-    message: 'All comments',
-    comments,
-  });
+const getAllComments = async (req, res, next) => {
+  try {
+    const comments = await commentsService.getAllComments();
+    return res.status(200).json({
+      success: true,
+      message: 'All comments',
+      comments,
+    });
+  } catch (error) {
+    return next(error);
+  }
 };
 
 const getCommentById = async (req, res) => {

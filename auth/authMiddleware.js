@@ -3,10 +3,9 @@ const jwtService = require('../general/jwtService');
 const isLoggedIn = async (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) {
-    return res.status(401).json({
-      success: false,
-      message: 'Token is required',
-    });
+    const error = new Error('Token is required');
+    error.status = 401;
+    return next(error);
   }
   try {
     const payload = await jwtService.verifyToken(token);
@@ -29,7 +28,7 @@ const isLoggedIn = async (req, res, next) => {
 };
 
 const isAdmin = async (req, res, next) => {
-  const { role } = res.locals.user;
+  const role = res.locals.user?.role;
   if (!role) {
     return res.status(401).json({
       success: false,
