@@ -1,5 +1,20 @@
+const winston = require('winston');
+
+const logger = winston.createLogger({
+  level: 'info', // Logi tase - info, error, warn, debug
+  format: winston.format.json(), // Logi formaat - json, simple, prettyPrint
+  defaultMeta: { service: 'blog' }, // Vaikimisi metaandmed
+  transports: [ // Transpordid - kuhu logitakse
+    new winston.transports.File({ filename: 'error.log', level: 'error' }), // Veateated
+    new winston.transports.File({ filename: 'combined.log' }), // Kõik logid
+  ],
+});
+
 const loggingMiddleware = (req, res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  logger.log({
+    level: 'info',
+    message: `${req.method} ${req.url} ${new Date().toISOString()}`,
+  });
   next();
 };
 

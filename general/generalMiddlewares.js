@@ -1,3 +1,15 @@
+const winston = require('winston');
+
+const logger = winston.createLogger({
+  level: 'info', // Logi tase - info, error, warn, debug
+  format: winston.format.json(), // Logi formaat - json, simple, prettyPrint
+  defaultMeta: { service: 'blog' }, // Vaikimisi metaandmed
+  transports: [ // Transpordid - kuhu logitakse
+    new winston.transports.File({ filename: 'error.log', level: 'error' }), // Veateated
+    new winston.transports.File({ filename: 'combined.log' }), // Kõik logid
+  ],
+});
+
 // eslint-disable-next-line no-unused-vars
 const notFound = (req, res, next) => {
   res.status(404).send({
@@ -7,8 +19,10 @@ const notFound = (req, res, next) => {
 };
 
 const errorHandling = (err, req, res, next) => {
-  console.log('Error from errorHandling:');
-  console.log(err.message);
+  logger.log({
+    level: 'error',
+    message: `${req.method} ${req.url} ${err.message} ${new Date().toISOString()}`,
+  });
   // console.error(err.stack);
   res.status(err.status || 500).json({
     success: false,
