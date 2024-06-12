@@ -1,7 +1,0 @@
-{"level":"info","message":"GET /comments 2024-06-12T11:57:02.095Z","service":"blog"}
-{"level":"info","message":"GET /comments 2024-06-12T11:58:58.972Z","service":"blog"}
-{"level":"error","message":"GET /comments Token is required 2024-06-12T11:58:58.976Z","service":"blog"}
-{"level":"info","message":"GET /users 2024-06-12T11:59:22.426Z","service":"blog"}
-{"level":"error","message":"GET /users Token is required 2024-06-12T11:59:22.427Z","service":"blog"}
-{"level":"info","message":"GET /users 2024-06-12T11:59:23.185Z","service":"blog"}
-{"level":"error","message":"GET /users Token is required 2024-06-12T11:59:23.186Z","service":"blog"}

@@ -1,4 +1,5 @@
 const express = require('express');
+const morgan = require('morgan');
 const cors = require('cors');
 const config = require('./config');
 const usersRouter = require('./users/usersRoutes');
@@ -9,12 +10,15 @@ const { notFound, errorHandling } = require('./general/generalMiddlewares');
 const { loggingMiddleware } = require('./general/loggingMiddleware');
 const ping = require('./general/generalController');
 const { isLoggedIn } = require('./auth/authMiddleware');
+const logger = require('./general/logger');
+
 
 const app = express();
 
 const port = config.port || 3000;
 
 app.use(cors());
+app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) }}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(loggingMiddleware);
@@ -32,5 +36,5 @@ app.use(errorHandling);
 
 app.listen(port, () => {
   // eslint-disable-next-line no-console
-  console.log(`Blog app listening at http://localhost:${port}`);
+  logger.info(`Blog app listening at http://localhost:${port}`);
 });

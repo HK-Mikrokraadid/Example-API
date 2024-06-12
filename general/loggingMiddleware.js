@@ -5,8 +5,8 @@ const logger = winston.createLogger({
   format: winston.format.json(), // Logi formaat - json, simple, prettyPrint
   defaultMeta: { service: 'blog' }, // Vaikimisi metaandmed
   transports: [ // Transpordid - kuhu logitakse
-    new winston.transports.File({ filename: 'error.log', level: 'error' }), // Veateated
-    new winston.transports.File({ filename: 'combined.log' }), // Kõik logid
+    new winston.transports.File({ filename: 'logs/error.log', level: 'error' }), // Veateated
+    new winston.transports.File({ filename: 'logs/combined.log' }), // Kõik logid
   ],
 });
 
