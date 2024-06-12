@@ -10,36 +10,29 @@ const isLoggedIn = async (req, res, next) => {
   try {
     const payload = await jwtService.verifyToken(token);
     if (!payload) {
-      return res.status(401).json({
-        success: false,
-        message: 'Invalid token',
-      });
+      const error = new Error('Invalid token');
+    error.status = 401;
+    return next(error);
     }
     res.locals.user = payload;
     return next();
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(error);
-    return res.status(401).json({
-      success: false,
-      message: 'Invalid token',
-    });
+    error.status = 401;
+    return next(error);
   }
 };
 
 const isAdmin = async (req, res, next) => {
   const role = res.locals.user?.role;
   if (!role) {
-    return res.status(401).json({
-      success: false,
-      message: 'You need to be logged in to access this route',
-    });
+    const error = new Error('You need to be logged in to access this route');
+    error.status = 401;
+    return next(error);
   }
   if (role !== 'admin') {
-    return res.status(403).json({
-      success: false,
-      message: 'Unauthorized',
-    });
+    const error = new Error('Unauthorized');
+    error.status = 403;
+    return next(error);
   }
   return next();
 };

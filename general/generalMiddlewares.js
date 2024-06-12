@@ -8,7 +8,8 @@ const notFound = (req, res, next) => {
 
 const errorHandling = (err, req, res, next) => {
   console.log('Error from errorHandling:');
-  console.error(err.stack);
+  console.log(err.message);
+  // console.error(err.stack);
   res.status(err.status || 500).json({
     success: false,
     message: err.message || 'Internal Server Error',

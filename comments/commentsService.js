@@ -9,8 +9,12 @@ const getAllComments = async () => {
 };
 
 const getCommentById = async (id) => {
-  const comment = comments.find((comment) => comment.id === id);
-  return comment;
+  try {
+    const comment = comments.find((comment) => comment.id === id);
+    return comment;
+  } catch (error) {
+    throw error;
+  }
 };
 
 const createComment = async (comment) => {

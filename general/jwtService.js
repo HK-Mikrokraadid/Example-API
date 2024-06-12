@@ -13,8 +13,8 @@ const verifyToken = async (token) => {
     const payload = jwt.verify(token, secret);
     return payload;
   } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error.message);
+    error.status = 401;
+    error.message = 'Invalid token';
     throw error;
   }
 };

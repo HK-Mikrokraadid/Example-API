@@ -1,49 +1,61 @@
 const usersService = require('./usersService');
 
-const getAllUsers = async (req, res) => {
-  const users = await usersService.getAllUsers();
-  return res.status(200).json({
-    success: true,
-    message: 'All users',
-    users,
-  });
+const getAllUsers = async (req, res, next) => {
+  try {
+    const users = await usersService.getAllUsers();
+    return res.status(200).json({
+      success: true,
+      message: 'All users',
+      users,
+    });
+  } catch (error) {
+    return next(error);
+  }
 };
 
-const getUserById = async (req, res) => {
-  const id = Number(req.params.id);
-  const user = await usersService.getUserById(id);
-  if (!user) {
-    return res.status(404).json({
-      success: false,
-      message: 'User not found',
+const getUserById = async (req, res, next) => {
+  try {
+    const id = Number(req.params.id);
+    const user = await usersService.getUserById(id);
+    if (!user) {
+      const error = new Error('User not found');
+      error.status = 404;
+      throw error;
+    }
+    return res.status(200).json({
+      success: true,
+      message: 'User by id',
+      user,
     });
+  } catch (error) {
+    return next(error);
   }
-  return res.status(200).json({
-    success: true,
-    message: 'User by id',
-    user,
-  });
+
 };
 
-const createUser = async (req, res) => {
-  const {
-    firstName, lastName, email, password,
-  } = req.body;
-  if (!firstName || !lastName || !email || !password) {
-    return res.status(400).json({
-      success: false,
-      message: 'First name, last name, email and password are required',
+const createUser = async (req, res, next) => {
+  try {
+    const {
+      firstName, lastName, email, password,
+    } = req.body;
+    if (!firstName || !lastName || !email || !password) {
+      const error = new Error('First name, last name, email and password are required');
+      error.status = 400;
+      throw error;
+    }
+    const user = {
+      firstName, lastName, email, password,
+    };
+    const createdUser = await usersService.createUser(user);
+    return res.status(201).json({
+      success: true,
+      message: 'User created',
+      user: createdUser,
     });
+  } catch (error) {
+    return next(error);
   }
-  const user = {
-    firstName, lastName, email, password,
-  };
-  const createdUser = await usersService.createUser(user);
-  return res.status(201).json({
-    success: true,
-    message: 'User created',
-    user: createdUser,
-  });
+
 };
 
 module.exports = { getAllUsers, getUserById, createUser };

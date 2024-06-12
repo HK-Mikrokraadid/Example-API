@@ -1,19 +1,17 @@
 const authService = require('./authService');
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    return res.status(400).json({
-      success: false,
-      message: 'Email and password are required',
-    });
+    const error = new Error('Email and password are required');
+    error.status = 400;
+    return next(error);
   }
   const token = await authService.login(email, password);
   if (!token) {
-    return res.status(401).json({
-      success: false,
-      message: 'Invalid email or password',
-    });
+    const error = new Error('Invalid email or password');
+    error.status = 401;
+    return next(error);
   }
   return res.status(200).json({
     success: true,
