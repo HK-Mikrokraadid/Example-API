@@ -43,11 +43,14 @@ const createPost = async (req, res) => {
       throw error;
     }
     const userId = res.locals.user.id;
-    const newPost = await postsService.createPost({ title, body, userId });
+    const post = {
+      title, body, user_id: userId,
+    };
+    const id = await postsService.createPost(createPost);
     return res.status(201).json({
       success: true,
       message: 'Post created',
-      post: newPost,
+      id,
     });
   } catch (error) {
     return next(error);

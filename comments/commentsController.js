@@ -41,11 +41,17 @@ const createComment = async (req, res) => {
       error.status = 400;
       throw error;
     }
-    const newComment = await commentsService.createComment({ name, email, body, postId });
+    const comment = {
+      name,
+      email,
+      body,
+      post_id: postId,
+    };
+    const id = await commentsService.createComment(comment);
     return res.status(201).json({
       success: true,
       message: 'comment created',
-      comment: newComment,
+      id,
     });
   } catch (error) {
     return next(error);
