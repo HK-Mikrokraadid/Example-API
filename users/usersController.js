@@ -46,11 +46,11 @@ const createUser = async (req, res, next) => {
     const user = {
       firstName, lastName, email, password,
     };
-    const createdUser = await usersService.createUser(user);
+    const id = await usersService.createUser(user);
     return res.status(201).json({
       success: true,
       message: 'User created',
-      user: createdUser,
+      id,
     });
   } catch (error) {
     return next(error);

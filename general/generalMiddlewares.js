@@ -11,6 +11,9 @@ const notFound = (req, res, next) => {
 const errorHandling = (err, req, res, next) => {
   logger.error(err.message, { stack: err.stack });
   // console.error(err.stack);
+  if (!err.status || err.status === 500) {
+    err.message = 'Internal Server Error';
+  }
   res.status(err.status || 500).json({
     success: false,
     message: err.message || 'Internal Server Error',

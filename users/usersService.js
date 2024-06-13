@@ -1,34 +1,49 @@
-const users = require('./users');
 const hashService = require('../general/hashService');
-
-const getUserById = async (id) => {
-  const user = users.find((u) => u.id === id);
-  const { password, ...userToReturn } = user;
-  return userToReturn;
-};
+const db = require('../db');
 
 const getAllUsers = async () => {
-  // return users without passwords
-  return users.map((u) => {
-    const { password, ...user } = u;
-    return user;
-  });
+  try {
+    const [rows] = await db.query(
+      `SELECT
+        firstName, lastName, email, created_at
+      FROM
+        users
+      WHERE
+        deleted_at IS NULL`);
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getUserById = async (id) => {
+  try {
+    const [rows] = await db.query('SELECT * FROM users WHERE id = ? AND deleted_at IS NULL', [id]);
+    return rows[0];
+  } catch (error) {
+    throw error;
+  }
 };
 
 const createUser = async (user) => {
-  const hashedPassword = await hashService.hashPassword(user.password);
-  const id = users.length + 1;
-  const newUser = {
-    ...user, id, password: hashedPassword, role: 'user',
-  };
-  users.push(newUser);
-  const { password, ...createdUser } = newUser;
-  return createdUser;
+  try {
+    const hashedPassword = await hashService.hashPassword(user.password);
+    const [result] = await db.query('INSERT INTO users SET ?', { ...createdUser, password: hashedPassword });
+    const id = result.insertId;
+    return id;
+  } catch (error) {
+    throw error;
+  }
+
 };
 
 const getUserByEmail = async (email) => {
-  const user = users.find((u) => u.email === email);
-  return user;
+  try {
+    const [rows] = await db.query('SELECT * FROM users WHERE email = ? AND deleted_at IS NULL', [email]);
+    return rows[0];
+  } catch (error) {
+    throw error;
+  }
 };
 
 module.exports = {

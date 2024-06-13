@@ -21,7 +21,6 @@ app.use(cors());
 app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) }}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(loggingMiddleware);
 
 app.use('/ping', ping);
 app.use('/login', authRouter);

@@ -2,7 +2,21 @@ const db = require('../db');
 
 const getAllPosts = async () => {
   try {
-    const [rows] = await db.query('SELECT * FROM posts WHERE deleted_at IS NULL');
+    const [rows] = await db.query(`
+      SELECT
+        u.firstName,
+        u.lastName,
+        u.email,
+        p.id,
+        p.title,
+        p.body,
+        p.created_at,
+        p.updated_at
+      FROM posts p
+      INNER JOIN users u ON p.user_id = u.id
+      WHERE p.deleted_at IS NULL;
+
+      `);
     return rows;
   } catch (error) {
     throw error;
