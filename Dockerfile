@@ -8,10 +8,12 @@ COPY package*.json ./
 
 # Installime sõltuvused
 RUN npm install -g pm2
-RUN npm install
+RUN  npm ci --ignore-scripts
 
 # Kopeerime ülejäänud rakenduse koodi
 COPY . .
+
+RUN npm rebuild bcrypt --build-from-source
 
 # Ava vajalik port
 EXPOSE 3000

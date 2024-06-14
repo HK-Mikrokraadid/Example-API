@@ -7,7 +7,6 @@ const postsRouter = require('./posts/postsRoutes');
 const commentsRouter = require('./comments/commentsRoutes');
 const authRouter = require('./auth/authRoutes');
 const { notFound, errorHandling } = require('./general/generalMiddlewares');
-const { loggingMiddleware } = require('./general/loggingMiddleware');
 const ping = require('./general/generalController');
 const { isLoggedIn } = require('./auth/authMiddleware');
 const logger = require('./general/logger');
