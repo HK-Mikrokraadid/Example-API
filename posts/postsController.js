@@ -2,11 +2,15 @@ const postsService = require('./postsService');
 
 const getAllPosts = async (req, res, next) => {
   try {
-    const posts = await postsService.getAllPosts();
+    let { from, limit } = req.query;
+    from = Number(from) || 0;
+    limit = Number(limit) || 10;
+    const posts = await postsService.getAllPosts(from, limit);
     return res.status(200).json({
       success: true,
       message: 'All posts',
       posts,
+      postCount: posts.length,
     });
   } catch (error) {
     return next(error);
@@ -46,7 +50,7 @@ const createPost = async (req, res) => {
     const post = {
       title, body, user_id: userId,
     };
-    const id = await postsService.createPost(createPost);
+    const id = await postsService.createPost(post);
     return res.status(201).json({
       success: true,
       message: 'Post created',
