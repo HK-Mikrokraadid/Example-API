@@ -22,7 +22,7 @@ const getAllPosts = async (page, limit) => {
       ORDER BY p.created_at DESC
       LIMIT ? OFFSET ?;
       `, [limit, offset]);
-    return { rows, total: total[0].total };
+    return { posts: rows, total: total[0].total };
   } catch (error) {
     throw error;
   }
