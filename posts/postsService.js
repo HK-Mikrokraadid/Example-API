@@ -40,7 +40,7 @@ const getPostById = async (id) => {
         p.updated_at
       FROM posts p
       INNER JOIN users u ON p.user_id = u.id
-      WHERE p.deleted_at IS NULL AND id = ?;`, [id]);
+      WHERE p.deleted_at IS NULL AND p.id = ?;`, [id]);
     return rows[0];
   } catch (error) {
     throw error;
