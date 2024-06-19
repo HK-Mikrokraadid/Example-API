@@ -2,15 +2,20 @@ const postsService = require('./postsService');
 
 const getAllPosts = async (req, res, next) => {
   try {
-    let { from, limit } = req.query;
-    from = Number(from) || 0;
-    limit = Number(limit) || 10;
-    const posts = await postsService.getAllPosts(from, limit);
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+
+    const { posts, total } = await postsService.getAllPosts(page, limit);
     return res.status(200).json({
       success: true,
       message: 'All posts',
       posts,
-      postCount: posts.length,
+      pagination: {
+        totalPages: Math.ceil(total / limit),
+        itemsPerPage: limit,
+        currentPage: page,
+        totalItems: total,
+      },
     });
   } catch (error) {
     return next(error);

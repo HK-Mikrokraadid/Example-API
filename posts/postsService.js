@@ -1,9 +1,11 @@
 const db = require('../db');
 
-const getAllPosts = async (from, limit) => {
+const getAllPosts = async (page, limit) => {
   try {
+    const offset = (page - 1) * limit;
+    // Select total of posts
+    const [total] = await db.query('SELECT COUNT(*) as total FROM posts WHERE deleted_at IS NULL;');
     // select from posts using from and limit
-
     const [rows] = await db.query(`
       SELECT
         u.firstName,
@@ -18,9 +20,9 @@ const getAllPosts = async (from, limit) => {
       INNER JOIN users u ON p.user_id = u.id
       WHERE p.deleted_at IS NULL
       ORDER BY p.created_at DESC
-      LIMIT ?, ?;
-      `, [from, limit]);
-    return rows;
+      LIMIT ? OFFSET ?;
+      `, [limit, offset]);
+    return { rows, total: total[0].total };
   } catch (error) {
     throw error;
   }
