@@ -1,6 +1,8 @@
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger/swagger.json');
 const config = require('./config');
 const usersRouter = require('./users/usersRoutes');
 const postsRouter = require('./posts/postsRoutes');
@@ -21,6 +23,7 @@ app.use(morgan('combined', { stream: { write: message => logger.info(message.tri
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/ping', ping);
 app.use('/login', authRouter);
 app.use(isLoggedIn);

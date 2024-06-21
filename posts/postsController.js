@@ -39,8 +39,6 @@ const getPostById = async (req, res, next) => {
   } catch (error) {
     return next(error);
   }
-
-
 };
 
 const createPost = async (req, res) => {

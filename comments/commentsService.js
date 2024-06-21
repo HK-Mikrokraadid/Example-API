@@ -1,4 +1,3 @@
-const comments = require('./comments');
 const db = require('../db');
 
 
