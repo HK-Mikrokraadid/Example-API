@@ -5,14 +5,14 @@ const { expect } = require('chai');
 const { setupTestDatabase } = require('../testDbSetup');
 
 
-let userToken;
+// let userToken;
 let adminToken;
 let userId;
 
-const user = {
+/* const user = {
   email: 'user@user.ee',
   password: 'user',
-};
+}; */
 
 const admin = {
   email: 'admin@admin.ee',
@@ -22,12 +22,12 @@ const admin = {
 before(async () => {
   await setupTestDatabase();
 
-  let response = await request(app)
+/*   let response = await request(app)
     .post('/login')
     .send(user);
   userToken = response.body.token;
-
-  response = await request(app)
+ */
+  let response = await request(app)
     .post('/login')
     .send(admin);
   adminToken = response.body.token;
