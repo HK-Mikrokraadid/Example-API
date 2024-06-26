@@ -3,7 +3,6 @@ const morgan = require('morgan');
 const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger/swagger.json');
-const config = require('./config');
 const usersRouter = require('./users/usersRoutes');
 const postsRouter = require('./posts/postsRoutes');
 const commentsRouter = require('./comments/commentsRoutes');
@@ -13,10 +12,7 @@ const ping = require('./general/generalController');
 const { isLoggedIn } = require('./auth/authMiddleware');
 const logger = require('./general/logger');
 
-
 const app = express();
-
-const port = config.port || 3000;
 
 app.use(cors());
 app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) }}));
@@ -35,7 +31,4 @@ app.use('*', notFound);
 
 app.use(errorHandling);
 
-app.listen(port, () => {
-  // eslint-disable-next-line no-console
-  logger.info(`Blog app listening at http://localhost:${port}`);
-});
+module.exports = app;

@@ -4,15 +4,15 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js",
-    "build": "webpack"
+    "test": "mocha --exit",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "chai": "^4.4.1",
     "cjs-module-lexer": "^1.3.1",
     "cors": "^2.8.5",
     "express": "^4.19.2",
@@ -21,5 +21,12 @@
     "mysql2": "^3.10.0",
     "swagger-ui-express": "^5.0.1",
     "winston": "^3.13.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.5.0",
+    "eslint": "^9.5.0",
+    "globals": "^15.6.0",
+    "mocha": "^10.5.1",
+    "supertest": "^7.0.0"
   }
 }
