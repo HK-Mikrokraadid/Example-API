@@ -22,18 +22,17 @@ const getCommentById = async (req, res, next) => {
       error.status = 404;
       throw error;
     }
+    return res.status(200).json({
+      success: true,
+      message: 'Comment by id',
+      comment,
+    });
   } catch (error) {
     return next(error);
   }
-
-  return res.status(200).json({
-    success: true,
-    message: 'Comment by id',
-    comment,
-  });
 };
 
-const createComment = async (req, res) => {
+const createComment = async (req, res, next) => {
   try {
     const { name, email, body, postId } = req.body;
     if (!name || !email || !body || !postId) {
@@ -56,7 +55,6 @@ const createComment = async (req, res) => {
   } catch (error) {
     return next(error);
   }
-
 }
 
 module.exports = { getAllComments, getCommentById, createComment };

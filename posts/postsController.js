@@ -41,7 +41,7 @@ const getPostById = async (req, res, next) => {
   }
 };
 
-const createPost = async (req, res) => {
+const createPost = async (req, res, next) => {
   try {
     const { title, body } = req.body;
     if (!title || !body) {
