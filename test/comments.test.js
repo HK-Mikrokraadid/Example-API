@@ -26,23 +26,23 @@ before(async () => {
   userToken = response.body.token;
 });
 
-describe('Posts endpoint', async () => {
-  it('Should fail to receive postst because of no token', async () => {
+describe('Comments endpoint', async () => {
+  it('Should fail to receive comments because of no token', async () => {
     const response = await request(app)
-      .get('/posts');
+      .get('/comments');
     expect(response.status).to.equal(401);
     expect(response.body).to.deep.equal({
       success: false,
       message: 'Token is required',
     });
   });
-  it('Should get array of posts', async () => {
+  it('Should get array of comments', async () => {
     const response = await request(app)
-      .get('/posts')
+      .get('/comments')
       .set('Authorization', `Bearer ${userToken}`);
     expect(response.status).to.equal(200);
-    expect(response.body).to.have.property('posts');
-    expect(response.body.posts).to.be.an('array');
-    expect(response.body.posts.length).to.be.gt(5);
+    expect(response.body).to.have.property('comments');
+    expect(response.body.comments).to.be.an('array');
+    expect(response.body.comments.length).to.be.gt(5);
   });
 });

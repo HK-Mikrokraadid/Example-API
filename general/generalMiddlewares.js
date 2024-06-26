@@ -1,4 +1,5 @@
 const logger = require('./logger');
+require('dotenv').config();
 
 // eslint-disable-next-line no-unused-vars
 const notFound = (req, res, next) => {
@@ -9,7 +10,9 @@ const notFound = (req, res, next) => {
 };
 
 const errorHandling = (err, req, res, next) => {
-  logger.error(err.message, { stack: err.stack });
+  if (!process.env.NODE_ENV === 'test') {
+    logger.error(err.message, { stack: err.stack });
+  }
   // console.error(err.stack);
   if (!err.status || err.status === 500) {
     err.message = 'Internal Server Error';
