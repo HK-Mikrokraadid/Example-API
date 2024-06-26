@@ -12,10 +12,10 @@ const user = {
   password: 'user',
 };
 
-const admin = {
+/* const admin = {
   email: 'admin@admin.ee',
   password: 'admin',
-};
+}; */
 
 before(async () => {
   await setupTestDatabase();
