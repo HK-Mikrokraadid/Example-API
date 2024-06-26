@@ -9,11 +9,12 @@ const notFound = (req, res, next) => {
   });
 };
 
+// eslint-disable-next-line no-unused-vars
 const errorHandling = (err, req, res, next) => {
+  // eslint-disable-next-line no-undef
   if (!process.env.NODE_ENV === 'test') {
     logger.error(err.message, { stack: err.stack });
   }
-  // console.error(err.stack);
   if (!err.status || err.status === 500) {
     err.message = 'Internal Server Error';
   }

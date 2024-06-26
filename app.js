@@ -16,6 +16,7 @@ require('dotenv').config();
 const app = express();
 
 app.use(cors());
+// eslint-disable-next-line no-undef
 if (!process.env.NODE_ENV === 'test') {
   app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) }}));
 }
