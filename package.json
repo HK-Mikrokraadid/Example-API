@@ -26,8 +26,6 @@
     "swagger-ui-express": "^5.0.1",
     "winston": "^3.13.0",
     "winston-logstash": "^1.2.1",
-    "winston-logstash-transport": "^2.0.0",
-    "winston3-logstash-transport": "^1.2.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.5.0",
