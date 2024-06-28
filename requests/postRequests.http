@@ -1,11 +1,15 @@
 @baseUrl = http://localhost:3000
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ1c2VyQHVzZXIuZWUiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNjk2MTMxOCwiZXhwIjoxNzE2OTY0OTE4fQ.tNnqfhJ9syxhSwsp_IQ0Dn7BDX5QO6mOgG_-YXwQjVU
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ1c2VyQHVzZXIuZWUiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxOTU3NzM2MCwiZXhwIjoxNzE5NTgwOTYwfQ.UNQbcjWzbOXxEaHDOogwB_HHq20Fm0szFN_L5qTaOlE
 
 ### Get all posts
 GET {{baseUrl}}/posts
+Authorization: Bearer {{token}}
+content-type: application/json
 
 ### Get a post by id
 GET {{baseUrl}}/posts/52
+Authorization: Bearer {{token}}
+content-type: application/json
 
 ### Create a post
 POST {{baseUrl}}/posts
