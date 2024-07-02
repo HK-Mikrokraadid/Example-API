@@ -3,8 +3,9 @@ const commentsController = require('./commentsController');
 
 const commentsRouter = express.Router();
 
-commentsRouter.get('/', commentsController.getAllComments);
-commentsRouter.get('/:id', commentsController.getCommentById);
-commentsRouter.post('/', commentsController.createComment);
+commentsRouter
+  .get('/', commentsController.getAllComments)
+  .get('/:id', commentsController.getCommentById)
+  .post('/', commentsController.createComment);
 
 module.exports = commentsRouter;

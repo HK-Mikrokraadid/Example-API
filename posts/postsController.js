@@ -62,6 +62,40 @@ const createPost = async (req, res, next) => {
   } catch (error) {
     return next(error);
   }
-}
+};
 
-module.exports = { getAllPosts, getPostById, createPost };
+const updatePost = async (req, res, next) => {
+  try {
+    const id = Number(req.params.id);
+    const post = await postsService.getPostById(id);
+    if (!post) {
+      const error = new Error('Post not found');
+      error.status = 404;
+      throw error;
+    }
+    if (post.user_id !== res.locals.user.id) {
+      const error = new Error('You are not authorized to update this post');
+      error.status = 401;
+      throw error;
+    }
+    const { title, body } = req.body;
+    if (!title && !body) {
+      const error = new Error('Title or body are required');
+      error.status = 400;
+      throw error;
+    }
+    const updatedPost = { 
+      title: title || post.title,
+      body: body || post.body,
+    };
+    await postsService.updatePost(id, updatedPost);
+    return res.status(200).json({
+      success: true,
+      message: 'Post updated',
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+module.exports = { getAllPosts, getPostById, createPost, updatePost };

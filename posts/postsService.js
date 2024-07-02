@@ -44,6 +44,11 @@ const getPostById = async (id) => {
 const createPost = async (post) => {
   const [result] = await db.query('INSERT INTO posts SET ?;', [post]);
   return result.insertId;
-}
+};
 
-module.exports = { getAllPosts, getPostById, createPost };
+const updatePost = async (id, post) => {
+  const [result] = await db.query('UPDATE posts SET ? WHERE id = ?;', [post, id]);
+  return result.affectedRows;
+};
+
+module.exports = { getAllPosts, getPostById, createPost, updatePost };
