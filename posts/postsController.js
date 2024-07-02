@@ -98,4 +98,28 @@ const updatePost = async (req, res, next) => {
   }
 };
 
-module.exports = { getAllPosts, getPostById, createPost, updatePost };
+const deletePost = async (req, res, next) => {
+  try {
+    const id = Number(req.params.id);
+    const post = await postsService.getPostById(id);
+    if (!post) {
+      const error = new Error('Post not found');
+      error.status = 404;
+      throw error;
+    }
+    if (post.user_id !== res.locals.user.id) {
+      const error = new Error('You are not authorized to delete this post');
+      error.status = 401;
+      throw error;
+    }
+    await postsService.deletePost(id);
+    return res.status(200).json({
+      success: true,
+      message: 'Post deleted',
+    });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+module.exports = { getAllPosts, getPostById, createPost, updatePost, deletePost };

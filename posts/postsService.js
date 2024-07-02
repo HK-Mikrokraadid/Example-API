@@ -51,4 +51,9 @@ const updatePost = async (id, post) => {
   return result.affectedRows;
 };
 
-module.exports = { getAllPosts, getPostById, createPost, updatePost };
+const deletePost = async (id) => {
+  const [result] = await db.query('UPDATE posts SET deleted_at = NOW() WHERE id = ?;', [id]);
+  return result.affectedRows;
+};
+
+module.exports = { getAllPosts, getPostById, createPost, updatePost, deletePost };
