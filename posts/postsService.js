@@ -42,7 +42,7 @@ const getPostById = async (id) => {
 };
 
 const createPost = async (post) => {
-  const [result] = await db.query('INSERT INTO posts ?', post);
+  const [result] = await db.query('INSERT INTO posts SET ?;', [post]);
   return result.insertId;
 }
 

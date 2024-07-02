@@ -4,10 +4,10 @@ const { combine, timestamp, printf, errors, json } = format;
 const LogstashTransport = require("winston-logstash/lib/winston-logstash-latest");
 
 // Kohandatud logi formaat
-const logFormat = printf(({ level, message, timestamp, stack }) => {
+/* const logFormat = printf(({ level, message, timestamp, stack }) => {
   console.log('Message from logger:', message);
   return `${timestamp} ${level}: ${stack || message}`;
-});
+}); */
 
 const logger = createLogger({
   level: 'info',
