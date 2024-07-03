@@ -9,8 +9,8 @@ usersRouter
   .use(isLoggedIn)
   .get('/:id', usersController.getUserById)
   .patch('/:id', usersController.updateUser)
+  .delete('/:id', usersController.deleteUser)
   .use(isAdmin)
-  .get('/', usersController.getAllUsers)
-  .delete('/:id', usersController.deleteUser);
+  .get('/', usersController.getAllUsers);
 
 module.exports = usersRouter;

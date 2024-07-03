@@ -9,11 +9,6 @@ const isLoggedIn = async (req, res, next) => {
       throw error;
     }
     const payload = await jwtService.verifyToken(token);
-    if (!payload) {
-      const error = new Error('Invalid token');
-      error.status = 401;
-      throw error;
-    }
     res.locals.user = payload;
     return next();
   } catch (error) {

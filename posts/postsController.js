@@ -45,7 +45,7 @@ const createPost = async (req, res, next) => {
   try {
     const { title, body } = req.body;
     if (!title || !body) {
-      const error = new Error('title and body are required');
+      const error = new Error('Title and body are required');
       error.status = 400;
       throw error;
     }
@@ -73,7 +73,7 @@ const updatePost = async (req, res, next) => {
       error.status = 404;
       throw error;
     }
-    if (post.user_id !== res.locals.id) {
+    if (post.user_id !== res.locals.user.id) {
       const error = new Error('You are not authorized to update this post');
       error.status = 401;
       throw error;
@@ -107,7 +107,7 @@ const deletePost = async (req, res, next) => {
       error.status = 404;
       throw error;
     }
-    if (post.user_id !== res.locals.id) {
+    if (post.user_id !== res.locals.user.id) {
       const error = new Error('You are not authorized to delete this post');
       error.status = 401;
       throw error;
