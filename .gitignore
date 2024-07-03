@@ -3,6 +3,6 @@ config.js
 logs/
 .env
 db_data/
-.DS_Store/
+.DS_Store
 .nyc_output/
 bundled.js
