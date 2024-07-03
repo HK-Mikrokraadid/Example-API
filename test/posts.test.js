@@ -5,6 +5,7 @@ const { expect } = require('chai');
 const { setupTestDatabase } = require('../testDbSetup');
 
 let userToken;
+let adminToken;
 let postId;
 
 const user = {
@@ -12,13 +13,23 @@ const user = {
   password: 'user',
 };
 
+const admin = {
+  email: 'admin@admin.ee',
+  password: 'admin',
+};
+
 before(async () => {
   await setupTestDatabase();
 
-  const response = await request(app)
+  let response = await request(app)
     .post('/login')
     .send(user);
   userToken = response.body.token;
+
+  response = await request(app)
+    .post('/login')
+    .send(admin);
+  adminToken = response.body.token;
 });
 
 describe('Posts endpoint', () => {
@@ -110,14 +121,9 @@ describe('Posts endpoint', () => {
     });
 
     it('Should fail to update a post if not the owner', async () => {
-      const anotherUserToken = (await request(app).post('/login').send({
-        email: 'another@user.ee',
-        password: 'another'
-      })).body.token;
-
       const response = await request(app)
         .patch(`/posts/${postId}`)
-        .set('Authorization', `Bearer ${anotherUserToken}`)
+        .set('Authorization', `Bearer ${adminToken}`)
         .send({
           title: 'Updated Title'
         });
@@ -156,6 +162,17 @@ describe('Posts endpoint', () => {
   });
 
   describe('DELETE /posts/:id', () => {
+    it('Should fail to delete a post if not the owner', async () => {
+      const response = await request(app)
+        .delete(`/posts/${postId}`)
+        .set('Authorization', `Bearer ${adminToken}`);
+      expect(response.status).to.equal(401);
+      expect(response.body).to.deep.equal({
+        success: false,
+        message: 'You are not authorized to delete this post',
+      });
+    });
+    
     it('Should delete a post', async () => {
       const response = await request(app)
         .delete(`/posts/${postId}`)
@@ -164,22 +181,6 @@ describe('Posts endpoint', () => {
       expect(response.body).to.deep.equal({
         success: true,
         message: 'Post deleted',
-      });
-    });
-
-    it('Should fail to delete a post if not the owner', async () => {
-      const anotherUserToken = (await request(app).post('/login').send({
-        email: 'another@user.ee',
-        password: 'another'
-      })).body.token;
-
-      const response = await request(app)
-        .delete(`/posts/${postId}`)
-        .set('Authorization', `Bearer ${anotherUserToken}`);
-      expect(response.status).to.equal(401);
-      expect(response.body).to.deep.equal({
-        success: false,
-        message: 'You are not authorized to delete this post',
       });
     });
 

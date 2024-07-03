@@ -27,6 +27,7 @@ const getAllPosts = async (page, limit) => {
 const getPostById = async (id) => {
   const [rows] = await db.query(`
       SELECT
+        u.id as user_id,
         u.firstName,
         u.lastName,
         u.email,
