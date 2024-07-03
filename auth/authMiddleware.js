@@ -19,11 +19,6 @@ const isLoggedIn = async (req, res, next) => {
 const isAdmin = async (req, res, next) => {
   try {
     const role = res.locals.user?.role;
-    if (!role) {
-      const error = new Error('You need to be logged in to access this route');
-      error.status = 401;
-      throw error;
-    }
     if (role !== 'admin') {
       const error = new Error('Unauthorized');
       error.status = 403;

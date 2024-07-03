@@ -9,11 +9,13 @@ let userToken;
 let userId;
 
 const admin = {
+  id: 1,
   email: 'admin@admin.ee',
   password: 'admin',
 };
 
 const user = {
+  id: 2,
   email: 'user@user.ee',
   password: 'user',
 };
@@ -152,13 +154,28 @@ describe('Users endpoint', () => {
       });
     });
 
-    it('should fail to update a user if not admin and changing role to admin', async () => {
+    it('should fail to update other user if not admin and changing role to admin', async () => {
       const res = await request(app)
         .patch(`/users/${userId}`)
         .set('Authorization', `Bearer ${userToken}`)
         .send({
           role: 'admin',
         });
+      expect(res.status).to.equal(403);
+      expect(res.body).to.deep.equal({
+        success: false,
+        message: 'Unauthorized',
+      });
+    });
+
+    it('should fail to update a user if not admin and changing role to admin', async () => {
+      const res = await request(app)
+        .patch(`/users/${user.id}`)
+        .set('Authorization', `Bearer ${userToken}`)
+        .send({
+          role: 'admin',
+        });
+        console.log(res.body);
       expect(res.status).to.equal(403);
       expect(res.body).to.deep.equal({
         success: false,

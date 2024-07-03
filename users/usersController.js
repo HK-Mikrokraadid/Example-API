@@ -119,7 +119,7 @@ const updateUser = async (req, res, next) => {
     if (password && password.length > 0) {
       hash = await hashService.hashPassword(password);
     }
-    if (role && (role !== 'admin' || role !== 'user')) {
+    if (role && (role !== 'admin' && role !== 'user')) {
       const error = new Error('Role must be admin or user');
       error.status = 400;
       throw error;

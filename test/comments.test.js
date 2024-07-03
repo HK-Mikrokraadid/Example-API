@@ -94,4 +94,26 @@ describe('Comments endpoint', () => {
       });
     });
   });
+
+  describe('GET /post/:postId/comments', () => {
+    it('Should get comments by post id', async () => {
+      const response = await request(app)
+        .get('/posts/1/comments')
+        .set('Authorization', `Bearer ${userToken}`);
+      expect(response.status).to.equal(200);
+      expect(response.body).to.have.property('comments');
+      expect(response.body.comments).to.be.an('array');
+    });
+
+    it('Should return 404 for non-existing post id', async () => {
+      const response = await request(app)
+        .get('/posts/999/comments')
+        .set('Authorization', `Bearer ${userToken}`);
+      expect(response.status).to.equal(404);
+      expect(response.body).to.deep.equal({
+        success: false,
+        message: 'Post not found',
+      });
+    });
+  });
 });

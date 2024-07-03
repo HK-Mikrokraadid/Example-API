@@ -1,4 +1,5 @@
 const commentsService = require('./commentsService');
+const postsService = require('../posts/postsService');
 
 const getAllComments = async (req, res, next) => {
   try {
@@ -60,6 +61,12 @@ const createComment = async (req, res, next) => {
 const getPostComments = async (req, res, next) => {
   try {
     const postId = Number(req.params.id);
+    const post = await postsService.getPostById(postId);
+    if (!post) {
+      const error = new Error('Post not found');
+      error.status = 404;
+      throw error;
+    }
     const comments = await commentsService.getPostComments(postId);
     return res.status(200).json({
       success: true,

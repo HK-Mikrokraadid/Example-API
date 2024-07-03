@@ -20,10 +20,21 @@ const nonExistingUser = {
 
 describe('Login endpoint', () => {
   describe('POST /login', () => {
-    it('Should fail login with invalid credentials', async () => {
+    it('Should fail login with invalid email', async () => {
       const response = await request(app)
         .post('/login')
         .send(nonExistingUser);
+      expect(response.status).to.equal(401);
+      expect(response.body).to.deep.equal({
+        success: false,
+        message: 'Invalid email or password',
+      });
+    });
+
+    it('Should fail login with invalid password', async () => {
+      const response = await request(app)
+        .post('/login')
+        .send({ ...user, password: 'wrong' });
       expect(response.status).to.equal(401);
       expect(response.body).to.deep.equal({
         success: false,
