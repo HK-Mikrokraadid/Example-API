@@ -5,3 +5,4 @@ logs/
 db_data/
 .DS_Store/
 .nyc_output/
+bundled.js
