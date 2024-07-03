@@ -78,7 +78,7 @@ const deleteUser = async (req, res, next) => {
       error.status = 404;
       throw error;
     }
-    if (user.id !== res.locals.user.id || res.locals.user.role !== 'admin') {
+    if (user.id !== res.locals.user.id && res.locals.user.role !== 'admin') {
       const error = new Error('Unauthorized');
       error.status = 403;
       throw error;
