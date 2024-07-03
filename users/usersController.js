@@ -96,7 +96,7 @@ const deleteUser = async (req, res, next) => {
 const updateUser = async (req, res, next) => {
   try {
     const id = Number(req.params.id);
-    const user = await usersService.getUserById(id);
+    const user = await usersService.getUserByIdWithPassword(id);
     if (!user) {
       const error = new Error('User not found');
       error.status = 404;
@@ -110,13 +110,13 @@ const updateUser = async (req, res, next) => {
     const {
       firstName, lastName, email, password, role,
     } = req.body;
-    if (!firstName || !lastName || !email || !password || !role) {
+    if (!firstName && !lastName && !email && !password && !role) {
       const error = new Error('First name, last name, email or password are required');
       error.status = 400;
       throw error;
     }
     let hash;
-    if (password) {
+    if (password && password.length > 0) {
       hash = await hashService.hashPassword(password);
     }
     if (role !== 'admin' && role !== 'user') {

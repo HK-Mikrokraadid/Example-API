@@ -17,6 +17,11 @@ const getUserById = async (id) => {
   return rows[0];
 };
 
+const getUserByIdWithPassword = async (id) => {
+  const [rows] = await db.query('SELECT * FROM users WHERE id = ? AND deleted_at IS NULL', [id]);
+  return rows[0];
+};
+
 const createUser = async (user) => {
   const hashedPassword = await hashService.hashPassword(user.password);
   const [result] = await db.query('INSERT INTO users SET ?', { ...user, password: hashedPassword });
@@ -40,5 +45,5 @@ const updateUser = async (id, user) => {
 };
 
 module.exports = {
-  getUserById, getAllUsers, createUser, getUserByEmail, deleteUser, updateUser,
+  getUserById, getAllUsers, createUser, getUserByEmail, deleteUser, updateUser, getUserByIdWithPassword,
 };
