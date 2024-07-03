@@ -55,6 +55,20 @@ const createComment = async (req, res, next) => {
   } catch (error) {
     return next(error);
   }
-}
+};
 
-module.exports = { getAllComments, getCommentById, createComment };
+const getPostComments = async (req, res, next) => {
+  try {
+    const postId = Number(req.params.id);
+    const comments = await commentsService.getPostComments(postId);
+    return res.status(200).json({
+      success: true,
+      message: 'Post comments',
+      comments,
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+module.exports = { getAllComments, getCommentById, createComment, getPostComments };

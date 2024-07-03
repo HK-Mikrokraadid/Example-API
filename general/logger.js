@@ -1,5 +1,5 @@
 const { createLogger, format, transports } = require('winston');
-const { combine, timestamp, printf, errors, json } = format;
+const { combine, timestamp, errors, json } = format;
 // const WinstonLogStash = require('winston3-logstash-transport');
 const LogstashTransport = require("winston-logstash/lib/winston-logstash-latest");
 

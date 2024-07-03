@@ -97,6 +97,8 @@ INSERT INTO posts (user_id, title, body) VALUES
   (2, 'The Benefits of Minimalism and How to Embrace a Simpler Lifestyle', 'Minimalism is about living with less and focusing on what truly matters. This blog post discusses the benefits of minimalism, including reduced stress, increased focus, and greater financial freedom. It also provides practical tips for embracing minimalism, such as decluttering your space, being mindful of your purchases, and prioritizing experiences over material possessions.');
 
 INSERT INTO comments (post_id, name, email, body) VALUES
+  (32, 'Alice Smith', 'alice.smith@example.com', 'Great article! I learned a lot about JavaScript closures. Thanks for sharing!'),
+  (32, 'Alice Smith', 'alice.smith@example.com', 'Great article! I learned a lot about JavaScript closures. Thanks for sharing!'),
   (1, 'Alice Smith', 'alice.smith@example.com', 'Great article! I learned a lot about JavaScript closures. Thanks for sharing!'),
   (2, 'Bob Johnson', 'bob.johnson@example.com', 'Very informative post on SEO. Ill definitely use these tips to improve my websites ranking.'),
   (3, 'Charlie Brown', 'charlie.brown@example.com', 'This introduction to machine learning was exactly what I needed. Clear and concise.'),
