@@ -23,10 +23,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/ping', ping);
 app.use('/login', authRouter);
+app.use('/users', usersRouter);
 app.use(isLoggedIn);
 app.use('/comments', commentsRouter);
 app.use('/posts', postsRouter);
-app.use('/users', usersRouter);
 
 app.use('*', notFound);
 

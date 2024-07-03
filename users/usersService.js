@@ -4,7 +4,7 @@ const db = require('../db');
 const getAllUsers = async () => {
   const [rows] = await db.query(
     `SELECT
-        firstName, lastName, email, created_at
+        id, firstName, lastName, email, role, created_at
       FROM
         users
       WHERE
@@ -13,7 +13,7 @@ const getAllUsers = async () => {
 };
 
 const getUserById = async (id) => {
-  const [rows] = await db.query('SELECT * FROM users WHERE id = ? AND deleted_at IS NULL', [id]);
+  const [rows] = await db.query('SELECT id, firstName, lastName, email, role, created_at FROM users WHERE id = ? AND deleted_at IS NULL', [id]);
   return rows[0];
 };
 
@@ -29,6 +29,16 @@ const getUserByEmail = async (email) => {
   return rows[0];
 };
 
+const deleteUser = async (id) => {
+  const [result] = await db.query('UPDATE users SET deleted_at = NOW() WHERE id = ?', [id]);
+  return result.affectedRows;
+};
+
+const updateUser = async (id, user) => {
+  const [result] = await db.query('UPDATE users SET ? WHERE id = ?', [user, id]);
+  return result.affectedRows;
+};
+
 module.exports = {
-  getUserById, getAllUsers, createUser, getUserByEmail,
+  getUserById, getAllUsers, createUser, getUserByEmail, deleteUser, updateUser,
 };

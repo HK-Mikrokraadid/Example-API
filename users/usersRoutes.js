@@ -1,13 +1,16 @@
 const express = require('express');
 const usersController = require('./usersController');
-const { isAdmin } = require('../auth/authMiddleware');
+const { isAdmin, isLoggedIn } = require('../auth/authMiddleware');
 
 const usersRouter = express.Router();
 
 usersRouter
   .post('/', usersController.createUser)
+  .use(isLoggedIn)
+  .get('/:id', usersController.getUserById)
+  .patch('/:id', usersController.updateUser)
   .use(isAdmin)
   .get('/', usersController.getAllUsers)
-  .get('/:id', usersController.getUserById);
+  .delete('/:id', usersController.deleteUser);
 
 module.exports = usersRouter;
