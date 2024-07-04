@@ -11,10 +11,12 @@ env:
   MYSQL_TEST_DATABASE: ${{ secrets.MYSQL_TEST_DATABASE }}
   MYSQL_TEST_USER: ${{ secrets.MYSQL_TEST_USER }}
   MYSQL_TEST_PASSWORD: ${{ secrets.MYSQL_TEST_PASSWORD }}
+  MYSQL_TEST_POSRT: ${{ secrets.MYSQL_TEST_PORT }}
   MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
   MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
   MYSQL_USER: ${{ secrets.MYSQL_USER }}
   MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+  MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
   SALT_ROUNDS: ${{ secrets.SALT_ROUNDS }}
   PORT: ${{ secrets.PORT }}
   JWT_SECRET: ${{ secrets.JWT_SECRET }}
