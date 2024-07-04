@@ -20,9 +20,7 @@ services:
       PORT: ${PORT}
       SALT_ROUNDS: ${SALT_ROUNDS}
       JWT_SECRET: ${JWT_SECRET}
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ghcr.io/hk-mikrokraadid/example-api/prod
     container_name: node_api
     restart: always
     volumes:

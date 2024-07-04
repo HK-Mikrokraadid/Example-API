@@ -19,9 +19,7 @@ services:
       PORT: ${PORT}
       SALT_ROUNDS: ${SALT_ROUNDS}
       JWT_SECRET: ${JWT_SECRET}
-    build:
-      context: .
-      dockerfile: Dockerfile.test
+      image: ghcr.io/hk-mikrokraadid/example-api/test
     container_name: test_node_api
     volumes:
       - ./logs:/usr/src/app/logs
