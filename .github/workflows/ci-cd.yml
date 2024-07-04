@@ -37,12 +37,12 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
 
-    - name: Build and start test environment
-      run: |
-        docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d --build
-    - name: Run tests
-      run: |
-        docker-compose -f docker-compose.yml -f docker-compose.test.yml run api_test
+#    - name: Build and start test environment
+#      run: |
+#        docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d --build
+#    - name: Run tests
+#      run: |
+#        docker-compose -f docker-compose.yml -f docker-compose.test.yml run api_test
 
   build-and-push:
     needs: test

@@ -8,6 +8,7 @@ services:
       MYSQL_DATABASE: ${MYSQL_TEST_DATABASE}
       MYSQL_USER: ${MYSQL_TEST_USER}
       MYSQL_PASSWORD: ${MYSQL_TEST_PASSWORD}
+      MYSQL_PORT: ${MYSQL_TEST_PORT}
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
   api_test:
