@@ -19,10 +19,15 @@ env:
 jobs:
   test:
     runs-on: ubuntu-latest
-    env:
-      IMAGE_NAME: ${{ github.repository }}
     steps:
     - uses: actions/checkout@v2
+
+    - name: Prepare image name
+      id: prep
+      run: |
+        # Convert GITHUB_REPOSITORY to lowercase and replace '/' with '-'
+        REPO_NAME=$(echo ${GITHUB_REPOSITORY} | tr '[:upper:]' '[:lower:]' | tr '/' '-')
+        echo "REPO_NAME=${REPO_NAME}" >> $GITHUB_ENV
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
@@ -39,24 +44,25 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    env:
-      IMAGE_NAME: ${{ github.repository }}
     steps:
     - uses: actions/checkout@v2
+
+    - name: Prepare image name
+      id: prep
+      run: |
+        # Convert GITHUB_REPOSITORY to lowercase and replace '/' with '-'
+        REPO_NAME=$(echo ${GITHUB_REPOSITORY} | tr '[:upper:]' '[:lower:]' | tr '/' '-')
+        echo "REPO_NAME=${REPO_NAME}" >> $GITHUB_ENV
+        echo "::set-output name=image_test::ghcr.io/${REPO_NAME}/test"
+        echo "::set-output name=image_prod::ghcr.io/${REPO_NAME}/prod"
 
     - name: Log in to GitHub Container Registry
       uses: docker/login-action@v1
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
-        password: ${{ secrets.MY_GITHUB_TOKEN }}
-    
-    - name: Prepare image names
-      id: prep
-      run: |
-        echo "::set-output name=image_test::ghcr.io/${GITHUB_REPOSITORY,,}/test"
-        echo "::set-output name=image_prod::ghcr.io/${GITHUB_REPOSITORY,,}/prod"
-        
+        password: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Build and push Test Docker image
       uses: docker/build-push-action@v2
       with:
@@ -64,8 +70,8 @@ jobs:
         file: ./Dockerfile.test
         push: true
         tags: |
-          ghcr.io/${{ github.repository }}/test:latest
-          ghcr.io/${{ github.repository }}/test:${{ github.sha }}
+          ${{ steps.prep.outputs.image_test }}:latest
+          ${{ steps.prep.outputs.image_test }}:${{ github.sha }}
 
     - name: Build and push Production Docker image
       uses: docker/build-push-action@v2
@@ -74,5 +80,5 @@ jobs:
         file: ./Dockerfile
         push: true
         tags: |
-          ghcr.io/${{ github.repository }}/prod:latest
-          ghcr.io/${{ github.repository }}/prod:${{ github.sha }}
+          ${{ steps.prep.outputs.image_prod }}:latest
+          ${{ steps.prep.outputs.image_prod }}:${{ github.sha }}
