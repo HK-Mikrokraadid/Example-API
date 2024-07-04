@@ -11,7 +11,9 @@ services:
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
   api_test:
-    image: ghcr.io/${IMAGE_NAME:-hk-mikrokraadid/example-api}/test:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.test
     container_name: node_api
     volumes:
       - ./logs:/usr/src/app/logs

@@ -12,7 +12,9 @@ services:
       - db_data:/var/lib/mysql
       - ./mysql-init:/docker-entrypoint-initdb.d
   api:
-    image: ghcr.io/${IMAGE_NAME:-hk-mikrokraadid/example-api}/prod:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: node_api
     restart: always
     volumes:
