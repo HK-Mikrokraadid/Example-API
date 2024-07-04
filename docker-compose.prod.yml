@@ -1,3 +1,4 @@
+version: '3'
 services:
   db:
     image: mysql:8.0
@@ -23,9 +24,7 @@ services:
       PORT: ${PORT}
       SALT_ROUNDS: ${SALT_ROUNDS}
       JWT_SECRET: ${JWT_SECRET}
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ghcr.io/${GITHUB_USERNAME}/${REPO_NAME}/prod:latest
     container_name: node_api
     restart: always
     volumes:
@@ -34,6 +33,5 @@ services:
       - "3000:3000"
     depends_on:
       - db
-
 volumes:
   db_data:

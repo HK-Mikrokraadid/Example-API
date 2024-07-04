@@ -12,14 +12,18 @@ services:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
   api_test:
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_TEST_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_TEST_DATABASE}
-      MYSQL_USER: ${MYSQL_TEST_USER}
-      MYSQL_PASSWORD: ${MYSQL_TEST_PASSWORD}
+      MYSQL_TEST_ROOT_PASSWORD: ${MYSQL_TEST_ROOT_PASSWORD}
+      MYSQL_TEST_DATABASE: ${MYSQL_TEST_DATABASE}
+      MYSQL_TEST_USER: ${MYSQL_TEST_USER}
+      MYSQL_TEST_PASSWORD: ${MYSQL_TEST_PASSWORD}
+      MYSQL_TEST_PORT: ${MYSQL_TEST_PORT}
+      MYSQL_TEST_HOST: ${MYSQL_TEST_HOST}
       PORT: ${PORT}
       SALT_ROUNDS: ${SALT_ROUNDS}
       JWT_SECRET: ${JWT_SECRET}
-      image: ghcr.io/hk-mikrokraadid/example-api/test
+    build:
+      context: .
+      dockerfile: Dockerfile.test
     container_name: test_node_api
     volumes:
       - ./logs:/usr/src/app/logs
