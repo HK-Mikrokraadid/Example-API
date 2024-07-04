@@ -15,6 +15,9 @@ env:
   MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
   MYSQL_USER: ${{ secrets.MYSQL_USER }}
   MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+  SALT_ROUNDS: ${{ secrets.SALT_ROUNDS }}
+  PORT: ${{ secrets.PORT }}
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
 jobs:
   test:
