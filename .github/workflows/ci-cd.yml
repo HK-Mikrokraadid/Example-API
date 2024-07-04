@@ -46,7 +46,13 @@ jobs:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.MY_GITHUB_TOKEN }}
-
+    
+    - name: Prepare image names
+      id: prep
+      run: |
+        echo "::set-output name=image_test::ghcr.io/${GITHUB_REPOSITORY,,}/test"
+        echo "::set-output name=image_prod::ghcr.io/${GITHUB_REPOSITORY,,}/prod"
+        
     - name: Build and push Test Docker image
       uses: docker/build-push-action@v2
       with:

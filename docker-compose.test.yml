@@ -11,7 +11,7 @@ services:
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
   api_test:
-    image: ghcr.io/${GITHUB_REPOSITORY}/test:latest
+    image: ghcr.io/${GITHUB_REPOSITORY,,}/test:latest
     container_name: node_api
     volumes:
       - ./logs:/usr/src/app/logs
