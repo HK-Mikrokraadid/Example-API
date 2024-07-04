@@ -25,7 +25,7 @@ if [ "$CURRENT_IMAGE_ID" != "$RUNNING_IMAGE_ID" ]; then
     docker compose down
 
     # Start new containers with the updated image
-    docker compose up -d
+    docker compose -f docker-compose.prod.yml up -d
 
     if [ $? -eq 0 ]; then
         log_message "Containers updated successfully"
