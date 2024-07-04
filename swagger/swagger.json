@@ -11,9 +11,61 @@
       "description": "Local server"
     }
   ],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Authentication and authorization related endpoints"
+    },
+    {
+      "name": "Users",
+      "description": "Endpoints related to user management"
+    },
+    {
+      "name": "Posts",
+      "description": "Endpoints related to blog posts"
+    },
+    {
+      "name": "Comments",
+      "description": "Endpoints related to comments on blog posts"
+    },
+    {
+      "name": "Health",
+      "description": "Health check endpoints"
+    }
+  ],
   "paths": {
+    "/ping": {
+      "get": {
+        "tags": ["Health"],
+        "summary": "Ping",
+        "description": "Health check endpoint to verify if the API is running.",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "API is alive and well!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/login": {
       "post": {
+        "tags": ["Auth"],
         "summary": "Login",
         "description": "Authenticates a user and returns a JWT token.",
         "requestBody": {
@@ -72,6 +124,7 @@
     },
     "/users": {
       "get": {
+        "tags": ["Users"],
         "summary": "Get all users",
         "description": "Retrieves a list of all users. Only accessible by admin users.",
         "security": [
@@ -100,6 +153,9 @@
                       "items": {
                         "type": "object",
                         "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
                           "firstName": {
                             "type": "string"
                           },
@@ -107,6 +163,9 @@
                             "type": "string"
                           },
                           "email": {
+                            "type": "string"
+                          },
+                          "role": {
                             "type": "string"
                           },
                           "created_at": {
@@ -127,6 +186,7 @@
         }
       },
       "post": {
+        "tags": ["Users"],
         "summary": "Create a user",
         "description": "Creates a new user. Admin privileges are required.",
         "security": [
@@ -185,14 +245,23 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "409": {
+            "description": "Conflict - User already exists"
           }
         }
       }
     },
     "/users/{id}": {
       "get": {
+        "tags": ["Users"],
         "summary": "Get user by ID",
         "description": "Retrieves a user by their ID.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -223,6 +292,9 @@
                     "user": {
                       "type": "object",
                       "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
                         "firstName": {
                           "type": "string"
                         },
@@ -230,6 +302,9 @@
                           "type": "string"
                         },
                         "email": {
+                          "type": "string"
+                        },
+                        "role": {
                           "type": "string"
                         },
                         "created_at": {
@@ -243,6 +318,137 @@
               }
             }
           },
+          "403": {
+            "description": "Forbidden - Unauthorized access"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Update user",
+        "description": "Updates an existing user.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "User ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User updated"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "403": {
+            "description": "Forbidden - Unauthorized access"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Users"],
+        "summary": "Delete user",
+        "description": "Deletes a user.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "User ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User deleted"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Unauthorized access"
+          },
           "404": {
             "description": "Not Found"
           }
@@ -251,8 +457,14 @@
     },
     "/posts": {
       "get": {
+        "tags": ["Posts"],
         "summary": "Get all posts",
         "description": "Retrieves all posts with pagination support.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "query",
@@ -347,10 +559,14 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized - Token is required"
           }
         }
       },
       "post": {
+        "tags": ["Posts"],
         "summary": "Create a post",
         "description": "Creates a new post. User must be logged in.",
         "security": [
@@ -409,8 +625,14 @@
     },
     "/posts/{id}": {
       "get": {
+        "tags": ["Posts"],
         "summary": "Get post by ID",
         "description": "Retrieves a post by its ID.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -483,12 +705,137 @@
             "description": "Not Found"
           }
         }
+      },
+      "patch": {
+        "tags": ["Posts"],
+        "summary": "Update post",
+        "description": "Updates an existing post. User must be the owner of the post.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Post ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "body": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Post updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Post updated"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized - You are not authorized to update this post"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Posts"],
+        "summary": "Delete post",
+        "description": "Deletes a post. User must be the owner of the post.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Post ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Post deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Post deleted"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - You are not authorized to delete this post"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
       }
     },
     "/comments": {
       "get": {
+        "tags": ["Comments"],
         "summary": "Get all comments",
         "description": "Retrieves all comments.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful response",
@@ -536,12 +883,21 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized - Token is required"
           }
         }
       },
       "post": {
+        "tags": ["Comments"],
         "summary": "Create a comment",
         "description": "Creates a new comment on a post.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -599,8 +955,14 @@
     },
     "/comments/{id}": {
       "get": {
+        "tags": ["Comments"],
         "summary": "Get comment by ID",
         "description": "Retrieves a comment by its ID.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -663,10 +1025,27 @@
         }
       }
     },
-    "/ping": {
+    "/posts/{id}/comments": {
       "get": {
-        "summary": "Ping",
-        "description": "Health check endpoint to verify if the API is running.",
+        "tags": ["Comments"],
+        "summary": "Get comments for a post",
+        "description": "Retrieves all comments for a specific post.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Post ID"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful response",
@@ -681,12 +1060,42 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "API is alive and well!"
+                      "example": "Post comments"
+                    },
+                    "comments": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "body": {
+                            "type": "string"
+                          },
+                          "post_id": {
+                            "type": "integer"
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "format": "date-time"
+                          }
+                        }
+                      }
                     }
                   }
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }

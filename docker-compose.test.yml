@@ -1,0 +1,23 @@
+services:
+  test_db:
+    image: mysql:8.0
+    container_name: mysql_test_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_TEST_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_TEST_DATABASE}
+      MYSQL_USER: ${MYSQL_TEST_USER}
+      MYSQL_PASSWORD: ${MYSQL_TEST_PASSWORD}
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+  api_test:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    container_name: node_api
+    volumes:
+      - ./logs:/usr/src/app/logs
+    depends_on:
+      test_db:
+        condition: service_healthy
+

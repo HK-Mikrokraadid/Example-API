@@ -1,9 +1,3 @@
-DROP DATABASE IF EXISTS test;
-
-CREATE DATABASE test;
-
-USE test;
-
 CREATE TABLE users (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   firstName VARCHAR(255) NOT NULL,
@@ -42,7 +36,6 @@ CREATE TABLE comments (
 INSERT INTO users (id, firstName, lastName, email, password, role) VALUES
   (1, 'Admin', 'Admin', 'admin@admin.ee', '$2b$10$9kYE7hDc488F85j/l0TUwOQOW5ZOJ9vPaUkG0KhP9chKRBkq49O.y', 'admin'),
   (2, 'User', 'User', 'user@user.ee', '$2b$10$ycejQPc8ItC8HD4P4HAD/e2Ek18zDGZcI3rcQSxrKrkUCMeAfa1Ga', 'user');
-
 
 INSERT INTO posts (user_id, title, body) VALUES
   (1, 'The Ultimate Guide to Understanding JavaScript Closures', 'JavaScript closures are a fundamental concept that every developer should understand. They allow functions to retain access to their lexical scope, even when the function is executed outside that scope. This can be incredibly powerful for creating private variables, managing asynchronous code, and more. In this guide, we will explore closures in-depth, with examples and practical applications.'),
@@ -147,4 +140,3 @@ INSERT INTO comments (post_id, name, email, body) VALUES
   (8, 'Violet Reed', 'violet.reed@example.com', 'Communication skills are so important. Thanks for the practical tips.'),
   (9, 'Will Harris', 'will.harris@example.com', 'Financial literacy is crucial. Thanks for the tips on how to improve it.'),
   (10, 'Xenia Gray', 'xenia.gray@example.com', 'Minimalism has so many benefits. Thanks for the guide on embracing a simpler lifestyle.');
-;

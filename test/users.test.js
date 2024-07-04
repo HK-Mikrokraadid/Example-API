@@ -175,7 +175,6 @@ describe('Users endpoint', () => {
         .send({
           role: 'admin',
         });
-        console.log(res.body);
       expect(res.status).to.equal(403);
       expect(res.body).to.deep.equal({
         success: false,

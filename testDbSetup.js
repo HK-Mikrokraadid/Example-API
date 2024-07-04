@@ -1,18 +1,16 @@
 const fs = require('fs').promises;
-const mysql = require('mysql2/promise');
-const { db } = require('./config');
+const dbConfig = require('./config').db;
+const db = require('./db')
 
 async function setupTestDatabase() {
-  let connection;
-  try {
-    // Create a connection to the MySQL server
-    connection = await mysql.createConnection(db);
 
+  try {
     // Create the test database if it doesn't exist
-    await connection.query(`CREATE DATABASE IF NOT EXISTS ${db.database}`);
+    await db.query(`DROP DATABASE IF EXISTS ${dbConfig.database};`);
+    await db.query(`CREATE DATABASE IF NOT EXISTS ${dbConfig.database};`);
 
     // Use the test database
-    await connection.query(`USE ${db.database}`);
+    await db.query(`USE ${dbConfig.database};`);
 
     // Read the SQL file
     const sqlFile = await fs.readFile('./testSql/testData.sql', 'utf8');
@@ -22,16 +20,12 @@ async function setupTestDatabase() {
 
     // Execute each statement
     for (const statement of statements) {
-      await connection.query(statement);
+      await db.query(statement);
     }
     console.log('Test database setup complete');
   } catch (error) {
     console.error('Error setting up test database:', error);
     throw error;
-  } finally {
-    if (connection) {
-      await connection.end();
-    }
   }
 }
 

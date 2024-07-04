@@ -181,4 +181,3 @@ Kui teil tekib probleeme:
 - Kontrollige konteinerite logisid Docker Compose abil: `docker-compose logs`.
 - Kontrollige rakenduse logifaile kaustas `./logs`.
 - Veenduge, et `.env` ja `config.js` failid on õigesti seadistatud.
-
