@@ -1,0 +1,68 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  MYSQL_TEST_ROOT_PASSWORD: ${{ secrets.MYSQL_TEST_ROOT_PASSWORD }}
+  MYSQL_TEST_DATABASE: ${{ secrets.MYSQL_TEST_DATABASE }}
+  MYSQL_TEST_USER: ${{ secrets.MYSQL_TEST_USER }}
+  MYSQL_TEST_PASSWORD: ${{ secrets.MYSQL_TEST_PASSWORD }}
+  MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+  MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+  MYSQL_USER: ${{ secrets.MYSQL_USER }}
+  MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Build and start test environment
+      run: |
+        docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d --build
+
+    - name: Run tests
+      run: |
+        docker-compose -f docker-compose.yml -f docker-compose.test.yml run api_test
+
+  build-and-push:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Log in to GitHub Container Registry
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.MY_GITHUB_TOKEN }}
+
+    - name: Build and push Test Docker image
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ./Dockerfile.test
+        push: true
+        tags: |
+          ghcr.io/${{ github.repository }}/test:latest
+          ghcr.io/${{ github.repository }}/test:${{ github.sha }}
+
+    - name: Build and push Production Docker image
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ./Dockerfile
+        push: true
+        tags: |
+          ghcr.io/${{ github.repository }}/prod:latest
+          ghcr.io/${{ github.repository }}/prod:${{ github.sha }}
