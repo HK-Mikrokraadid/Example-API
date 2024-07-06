@@ -6,8 +6,8 @@
   "scripts": {
     "test": "cross-env NODE_ENV=test mocha --exit",
     "coverage": "cross-env NODE_ENV=test nyc mocha --exit",
-    "start": "node server.js",
-    "dev": "cross-env NODE_ENV=development nodemon server.js"
+    "start": "node ./api/server.js",
+    "dev": "cross-env NODE_ENV=development nodemon ./src/server.js"
   },
   "keywords": [],
   "author": "",

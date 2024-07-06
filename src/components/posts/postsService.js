@@ -1,4 +1,4 @@
-const db = require('../db');
+const db = require('../../db');
 
 const getAllPosts = async (page, limit) => {
   const offset = (page - 1) * limit;

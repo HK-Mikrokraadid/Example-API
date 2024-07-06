@@ -1,8 +1,8 @@
+const app = require('../src/app');
 const request = require('supertest');
-const app = require('../app');
 const { describe, it, before } = require('mocha');
 const { expect } = require('chai');
-const { setupTestDatabase } = require('../testDbSetup');
+const { setupTestDatabase } = require('../src/testDbSetup');
 
 let userToken;
 let adminToken;

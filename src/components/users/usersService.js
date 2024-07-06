@@ -1,5 +1,5 @@
 const hashService = require('../general/hashService');
-const db = require('../db');
+const db = require('../../db');
 
 const getAllUsers = async () => {
   const [rows] = await db.query(

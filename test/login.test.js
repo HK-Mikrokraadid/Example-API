@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../app');
+const app = require('../src/app');
 const { describe, it } = require('mocha');
 const { expect } = require('chai');
 
