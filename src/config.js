@@ -1,8 +1,6 @@
 /* eslint-disable no-undef */
 require('dotenv').config();
 
-console.log(process.env);
-
 const config = {
   development: {
     port: Number(process.env.PORT) || 3000,
