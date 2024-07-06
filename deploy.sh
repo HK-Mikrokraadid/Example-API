@@ -1,16 +1,22 @@
 #!/bin/bash
 
-# Define log_message function
-log_message() {
-    echo "$(date +"%Y-%m-%d %H:%M:%S") - $1"
-}
-
-# Ensure required environment variables are set
-if [[ -z "$GITHUB_PAT" || -z "$GITHUB_USERNAME" || -z "$IMAGE_NAME" ]]; then
-    echo "Required environment variables are not set."
+# Load environment variables
+if [ -f .env ]; then
+    export $(cat .env | xargs)
+else
+    echo ".env file not found"
     exit 1
 fi
 
+# Set your GitHub Container Registry details
+IMAGE_NAME="ghcr.io/${GITHUB_USERNAME}/${REPO_NAME}/prod"
+
+# Function to log messages
+log_message() {
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - $1"
+}
+
+# Authenticate with GitHub Container Registry
 echo $GITHUB_PAT | docker login ghcr.io -u $GITHUB_USERNAME --password-stdin
 
 if [ $? -ne 0 ]; then
@@ -35,10 +41,10 @@ if [ "$CURRENT_IMAGE_ID" != "$RUNNING_IMAGE_ID" ]; then
     log_message "New image detected. Updating container..."
 
     # Stop the current containers
-    docker compose down
+    docker-compose down
 
     # Start new containers with the updated image
-    docker compose -f docker-compose.prod.yml up -d
+    docker-compose up -d
 
     if [ $? -eq 0 ]; then
         log_message "Containers updated successfully"
