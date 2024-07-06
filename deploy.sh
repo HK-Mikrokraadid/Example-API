@@ -1,3 +1,16 @@
+#!/bin/bash
+
+# Define log_message function
+log_message() {
+    echo "$(date +"%Y-%m-%d %H:%M:%S") - $1"
+}
+
+# Ensure required environment variables are set
+if [[ -z "$GITHUB_PAT" || -z "$GITHUB_USERNAME" || -z "$IMAGE_NAME" ]]; then
+    echo "Required environment variables are not set."
+    exit 1
+fi
+
 echo $GITHUB_PAT | docker login ghcr.io -u $GITHUB_USERNAME --password-stdin
 
 if [ $? -ne 0 ]; then
