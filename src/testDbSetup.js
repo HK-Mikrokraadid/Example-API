@@ -1,17 +1,9 @@
 const fs = require('fs').promises;
-const dbConfig = require('./config').db;
 const db = require('./db')
 
 async function setupTestDatabase() {
 
   try {
-    // Create the test database if it doesn't exist
-    await db.query(`DROP DATABASE IF EXISTS ${dbConfig.database};`);
-    await db.query(`CREATE DATABASE IF NOT EXISTS ${dbConfig.database};`);
-
-    // Use the test database
-    await db.query(`USE ${dbConfig.database};`);
-
     // Read the SQL file
     const sqlFile = await fs.readFile('./testSql/testData.sql', 'utf8');
 

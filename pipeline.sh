@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Build and start the test environment
-docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d --build
+docker-compose -f docker-compose.test.yml up -d --build
 
 # Run tests
-docker-compose -f docker-compose.yml -f docker-compose.test.yml run api_test
+docker-compose -f docker-compose.test.yml run api_test
 
 # If tests pass, build and deploy production
 if [ $? -eq 0 ]; then

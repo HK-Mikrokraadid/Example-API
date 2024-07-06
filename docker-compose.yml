@@ -8,8 +8,6 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_PORT: ${MYSQL_PORT}
-      MYSQL_HOST: ${MYSQL_HOST}
     volumes:
       - db_data:/var/lib/mysql
       - ./mysql-init:/docker-entrypoint-initdb.d
@@ -35,6 +33,5 @@ services:
       - "3000:3000"
     depends_on:
       - db
-
 volumes:
   db_data:
