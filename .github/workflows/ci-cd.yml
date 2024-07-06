@@ -27,6 +27,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+    - uses: hmarr/debug-action@v3
     - uses: actions/checkout@v2
 
     - name: Prepare image name
