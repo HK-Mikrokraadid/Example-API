@@ -111,7 +111,7 @@ See käsk seadistab ja käivitab konteinerid, sealhulgas rakenduse konteineri ja
 Pärast edukat konteinerite käivitamist on rakendus ligipääsetav aadressil:
 
 ```bash
-http://localhost:3000/bing
+http://localhost:3000/ping
 ```
 
 Testige, kas API töötab, tehes päringud näiteks Postmani või mõne muu HTTP kliendiga.

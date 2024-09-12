@@ -35,16 +35,16 @@ fi
 
 # Check if there's a new image
 CURRENT_IMAGE_ID=$(docker inspect --format='{{.Id}}' $IMAGE_NAME:latest 2>/dev/null)
-RUNNING_IMAGE_ID=$(docker inspect --format='{{.Image}}' node_api 2>/dev/null)
+RUNNING_IMAGE_ID=$(docker inspect --format='{{.Image}}' example-api-api 2>/dev/null)
 
 if [ "$CURRENT_IMAGE_ID" != "$RUNNING_IMAGE_ID" ]; then
     log_message "New image detected. Updating container..."
 
     # Stop the current containers
-    docker-compose down
+    docker compose down
 
     # Start new containers with the updated image
-    docker-compose up -d
+    docker compose up -d
 
     if [ $? -eq 0 ]; then
         log_message "Containers updated successfully"
