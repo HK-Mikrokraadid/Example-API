@@ -1,0 +1,159 @@
+apiVersion: v1
+data:
+  init.sql: |
+    DROP DATABASE IF EXISTS `blog`;
+
+    CREATE DATABASE `blog`;
+
+    USE `blog`;
+
+    CREATE TABLE `users` (
+      `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+      `firstName` VARCHAR(255) NOT NULL,
+      `lastName` VARCHAR(255) NOT NULL,
+      `email` VARCHAR(255) NOT NULL,
+      `password` VARCHAR(255) NOT NULL,
+      `role` ENUM('admin', 'user') DEFAULT 'user',
+      `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      `deleted_at` TIMESTAMP DEFAULT NULL
+    );
+
+    CREATE TABLE `posts` (
+      `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+      `title` VARCHAR(255) NOT NULL,
+      `body` TEXT NOT NULL,
+      `user_id` INT NOT NULL,
+      `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      `deleted_at` TIMESTAMP DEFAULT NULL,
+      FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
+    );
+
+    CREATE TABLE `comments` (
+      `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+      `name` VARCHAR(255) NOT NULL,
+      `email` VARCHAR(255) NOT NULL,
+      `body` TEXT NOT NULL,
+      `post_id` INT NOT NULL,
+      `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      `deleted_at` TIMESTAMP DEFAULT NULL,
+      FOREIGN KEY (`post_id`) REFERENCES `posts`(`id`)
+    );
+
+    INSERT INTO users (id, firstName, lastName, email, password, role) VALUES
+      (1, 'Admin', 'Admin', 'admin@admin.ee', '$2b$10$9kYE7hDc488F85j/l0TUwOQOW5ZOJ9vPaUkG0KhP9chKRBkq49O.y', 'admin'),
+      (2, 'User', 'User', 'user@user.ee', '$2b$10$ycejQPc8ItC8HD4P4HAD/e2Ek18zDGZcI3rcQSxrKrkUCMeAfa1Ga', 'user');
+
+
+    INSERT INTO posts (user_id, title, body) VALUES
+      (1, 'The Ultimate Guide to Understanding JavaScript Closures', 'JavaScript closures are a fundamental concept that every developer should understand. They allow functions to retain access to their lexical scope, even when the function is executed outside that scope. This can be incredibly powerful for creating private variables, managing asynchronous code, and more. In this guide, we will explore closures in-depth, with examples and practical applications.'),
+      (2, 'How to Optimize Your Website for SEO: Tips and Best Practices', 'Search Engine Optimization (SEO) is critical for driving traffic to your website. By optimizing your content, metadata, and site structure, you can improve your site’s visibility on search engines like Google. This post covers the best practices for on-page and off-page SEO, keyword research, link building strategies, and how to use analytics to track your progress.'),
+      (1, 'A Comprehensive Introduction to Machine Learning', 'Machine learning is revolutionizing various industries by enabling computers to learn from data and make decisions with minimal human intervention. This blog post provides an introduction to the key concepts of machine learning, including supervised and unsupervised learning, neural networks, and popular algorithms such as decision trees and k-means clustering.'),
+      (2, 'The Importance of Cybersecurity in the Digital Age', 'In today’s digital world, cybersecurity has become more important than ever. With the increasing number of cyber threats, businesses and individuals need to protect their data and systems from attacks. This article discusses the types of cyber threats, best practices for securing your network, and the importance of cybersecurity policies and training.'),
+      (1, '10 Effective Strategies for Time Management', 'Time management is essential for productivity and achieving your goals. By effectively managing your time, you can accomplish more in less time and reduce stress. This post shares ten effective strategies for time management, including prioritizing tasks, setting SMART goals, using productivity tools, and avoiding common time-wasting habits.'),
+      (1, 'Understanding the Basics of Cryptocurrency and Blockchain', 'Cryptocurrencies like Bitcoin and Ethereum have taken the world by storm, but many people still don’t understand how they work. This post explains the basics of cryptocurrency and blockchain technology, including how transactions are verified, the role of miners, and the potential applications of blockchain beyond digital currencies.'),
+      (2, 'The Benefits of Regular Exercise for Mental Health', 'Regular exercise is not only good for your physical health but also for your mental well-being. Exercise has been shown to reduce symptoms of depression and anxiety, improve mood, and enhance cognitive function. This article explores the mental health benefits of exercise, different types of physical activities, and tips for incorporating exercise into your daily routine.'),
+      (2, 'An Introduction to Cloud Computing: Benefits and Challenges', 'Cloud computing has transformed the way businesses operate by providing scalable, on-demand computing resources. This blog post covers the fundamentals of cloud computing, including its benefits such as cost savings, flexibility, and disaster recovery. It also discusses the challenges, such as security concerns and potential downtime, and how to address them.'),
+      (1, 'The Role of Artificial Intelligence in Modern Healthcare', 'Artificial Intelligence (AI) is playing an increasingly important role in healthcare, from diagnostics to treatment planning. This post examines how AI is being used to improve patient outcomes, streamline administrative tasks, and advance medical research. It also explores ethical considerations and the future of AI in healthcare.'),
+      (2, 'How to Build a Successful Remote Team', 'With the rise of remote work, building a successful remote team has become a priority for many organizations. This article provides insights into the key elements of a thriving remote team, including communication, collaboration tools, trust-building, and maintaining a strong company culture. It also offers practical tips for managers to lead remote teams effectively.'),
+      (1, 'The Power of Mindfulness: Techniques and Benefits', 'Mindfulness is a practice that involves focusing on the present moment without judgment. It has been shown to reduce stress, improve focus, and enhance overall well-being. This blog post explores various mindfulness techniques, such as meditation, deep breathing, and mindful walking, and discusses the benefits of incorporating mindfulness into your daily life.'),
+      (2, 'Getting Started with Python for Data Science', 'Python is one of the most popular programming languages for data science due to its simplicity and extensive libraries. This post provides a beginner’s guide to using Python for data science, covering essential libraries like pandas, NumPy, and Matplotlib. It also includes examples of data manipulation, analysis, and visualization.'),
+      (1, 'The Future of Renewable Energy: Trends and Innovations', 'Renewable energy sources, such as solar, wind, and hydro, are becoming increasingly important in the fight against climate change. This article explores the latest trends and innovations in renewable energy, including advancements in technology, the growth of green energy jobs, and the impact of government policies on the adoption of renewable energy.'),
+      (2, 'The Impact of Social Media on Society', 'Social media has transformed the way we communicate and interact with each other. While it offers numerous benefits, such as connecting people and fostering communities, it also has drawbacks, including misinformation and negative effects on mental health. This post examines the impact of social media on society, both positive and negative, and discusses ways to use it responsibly.'),
+      (1, 'Effective Strategies for Personal Finance Management', 'Managing personal finances is crucial for achieving financial stability and long-term goals. This blog post provides effective strategies for personal finance management, including budgeting, saving, investing, and managing debt. It also offers tips on how to track your spending, create an emergency fund, and plan for retirement.'),
+      (1, 'The Science Behind Habit Formation and How to Build Good Habits', 'Habits play a significant role in our daily lives, influencing our behaviors and outcomes. Understanding the science behind habit formation can help you build good habits and break bad ones. This article explores the habit loop, the role of cues, routines, and rewards, and provides practical tips for creating lasting positive habits.'),
+      (2, 'An Introduction to the Internet of Things (IoT)', 'The Internet of Things (IoT) refers to the network of interconnected devices that communicate and share data with each other. This post provides an introduction to IoT, its applications in various industries, and the potential benefits and challenges of adopting IoT technology. It also discusses the importance of security and privacy in IoT implementations.'),
+      (2, 'The Benefits of Learning a Second Language', 'Learning a second language offers numerous cognitive, social, and professional benefits. This blog post explores the advantages of being bilingual or multilingual, including improved brain function, enhanced cultural understanding, and better career opportunities. It also provides tips for choosing a language to learn and resources for language study.'),
+      (1, 'The Rise of E-commerce: Trends and Future Predictions', 'E-commerce has grown exponentially in recent years, changing the way consumers shop and businesses operate. This article examines the current trends in e-commerce, such as mobile shopping, personalization, and sustainability. It also offers predictions for the future of e-commerce, including the impact of emerging technologies like AI and AR.'),
+      (2, 'How to Create an Effective Content Marketing Strategy', 'Content marketing is a powerful tool for attracting and engaging your target audience. This post outlines the steps to create an effective content marketing strategy, including defining your goals, identifying your audience, creating valuable content, and measuring your success. It also shares tips for repurposing content and leveraging different content formats.'),
+      (1, 'The Importance of Emotional Intelligence in Leadership', 'Emotional intelligence (EQ) is a critical skill for effective leadership. Leaders with high EQ can better understand and manage their own emotions and those of their team members. This blog post discusses the components of emotional intelligence, its importance in leadership, and ways to develop and enhance your EQ.'),
+      (2, 'The Basics of Stock Market Investing for Beginners', 'Investing in the stock market can be a great way to grow your wealth, but it’s important to understand the basics before you start. This article provides an introduction to stock market investing, including how stocks work, the importance of diversification, and tips for researching and selecting stocks. It also covers common mistakes to avoid.'),
+      (1, 'How to Improve Your Public Speaking Skills', 'Public speaking is a valuable skill that can boost your career and personal growth. This blog post offers practical tips for improving your public speaking skills, including how to prepare effectively, engage your audience, and manage anxiety. It also discusses the importance of body language and voice modulation in delivering a compelling speech.'),
+      (2, 'The Role of Big Data in Modern Business', 'Big data is transforming the way businesses make decisions by providing insights based on large volumes of data. This post explores the role of big data in modern business, including how it can be used to optimize operations, enhance customer experiences, and drive innovation. It also discusses the challenges of managing and analyzing big data.'),
+      (1, 'The Benefits of Practicing Gratitude', 'Practicing gratitude has been shown to improve mental health, increase happiness, and strengthen relationships. This blog post discusses the science behind gratitude, its benefits, and practical ways to incorporate gratitude into your daily life, such as keeping a gratitude journal, expressing appreciation, and practicing mindfulness.'),
+      (1, 'The Evolution of Artificial Intelligence: Past, Present, and Future', 'Artificial intelligence (AI) has come a long way since its inception, with significant advancements in recent years. This article traces the evolution of AI, from early research to modern applications in various fields. It also looks ahead to the future of AI, exploring potential developments and ethical considerations.'),
+      (2, 'How to Develop a Growth Mindset', 'A growth mindset is the belief that abilities and intelligence can be developed through dedication and hard work. This post explains the concept of a growth mindset, its benefits, and practical steps to cultivate it. It also discusses the importance of embracing challenges, learning from feedback, and persisting in the face of setbacks.'),
+      (2, 'The Importance of Work-Life Balance and How to Achieve It', 'Maintaining a healthy work-life balance is essential for overall well-being and productivity. This blog post explores the importance of work-life balance, the challenges of achieving it, and strategies for creating a more balanced lifestyle. It includes tips for setting boundaries, managing time effectively, and prioritizing self-care.'),
+      (1, 'The Basics of Sustainable Living: Tips and Ideas', 'Sustainable living involves making choices that reduce your environmental impact and promote a healthier planet. This article provides an introduction to sustainable living, including tips for reducing waste, conserving energy, and making eco-friendly choices. It also discusses the benefits of sustainability for individuals and communities.'),
+      (2, 'The Benefits of Mind Mapping for Organizing Your Thoughts', 'Mind mapping is a powerful technique for organizing your thoughts, improving creativity, and enhancing problem-solving skills. This blog post explains how to create a mind map, the benefits of using mind maps, and practical applications for mind mapping in various aspects of life, such as project planning, note-taking, and brainstorming.'),
+      (1, 'An Overview of Quantum Computing and Its Potential', 'Quantum computing is an emerging field that promises to revolutionize computing by leveraging the principles of quantum mechanics. This post provides an overview of quantum computing, its potential applications, and the current state of research. It also discusses the challenges and opportunities associated with this cutting-edge technology.'),
+      (2, 'The Importance of Diversity and Inclusion in the Workplace', 'Diversity and inclusion are critical for creating a positive and productive workplace. This article explores the benefits of a diverse and inclusive work environment, including improved innovation, employee satisfaction, and company performance. It also offers practical tips for fostering diversity and inclusion within your organization.'),
+      (1, 'The Benefits of Reading: Why You Should Read Every Day', 'Reading offers numerous benefits, from improving cognitive function to reducing stress. This blog post discusses the various advantages of reading, including enhancing vocabulary, boosting creativity, and increasing empathy. It also provides tips for incorporating reading into your daily routine and recommendations for books to get started.'),
+      (2, 'How to Create a Budget and Stick to It', 'Creating a budget is a fundamental step towards financial stability and achieving your financial goals. This article provides a step-by-step guide to creating a budget, including tracking your income and expenses, setting financial goals, and adjusting your budget as needed. It also offers tips for staying on track and avoiding common budgeting pitfalls.'),
+      (1, 'The Role of Nutrition in Maintaining Good Health', 'Nutrition plays a crucial role in maintaining overall health and preventing chronic diseases. This post explores the importance of a balanced diet, the benefits of various nutrients, and tips for making healthy food choices. It also discusses the impact of nutrition on energy levels, mental health, and immune function.'),
+      (1, 'The Benefits of Meditation and How to Get Started', 'Meditation is a practice that offers numerous mental and physical health benefits, including reducing stress, improving focus, and enhancing emotional well-being. This article provides an introduction to meditation, different types of meditation practices, and tips for beginners on how to get started and maintain a regular meditation routine.'),
+      (2, 'The Impact of Technology on Education', 'Technology has significantly transformed education, offering new opportunities for learning and teaching. This blog post examines the impact of technology on education, including the benefits of online learning, the use of educational apps and tools, and the role of artificial intelligence in personalized learning. It also discusses the challenges and considerations for integrating technology in education.'),
+      (2, 'How to Build Resilience and Overcome Adversity', 'Resilience is the ability to bounce back from adversity and adapt to challenging situations. This article explores the characteristics of resilient individuals, the importance of resilience in personal and professional life, and practical strategies for building resilience, such as developing a positive mindset, seeking support, and learning from setbacks.'),
+      (1, 'The Benefits of Volunteer Work and How to Get Involved', 'Volunteer work offers numerous benefits, both for the community and for the volunteers themselves. This post discusses the various advantages of volunteering, including improving mental health, developing new skills, and fostering a sense of purpose. It also provides tips on how to find volunteer opportunities and get involved in your community.'),
+      (2, 'The Importance of Setting Boundaries for Healthy Relationships', 'Setting boundaries is essential for maintaining healthy relationships and ensuring mutual respect. This blog post explains the importance of boundaries, different types of boundaries (emotional, physical, digital), and practical tips for setting and communicating boundaries effectively. It also discusses how to respect others’ boundaries.'),
+      (1, 'The Basics of Digital Marketing: Strategies and Tools', 'Digital marketing is crucial for reaching and engaging your target audience in today’s digital world. This article provides an overview of digital marketing strategies, including social media marketing, email marketing, SEO, and content marketing. It also discusses essential tools for digital marketing and tips for creating a successful digital marketing campaign.'),
+      (2, 'The Role of Sleep in Physical and Mental Health', 'Sleep is vital for maintaining both physical and mental health. This blog post explores the importance of sleep, the effects of sleep deprivation, and tips for improving sleep quality. It discusses the stages of sleep, the impact of sleep on brain function, immune system, and overall well-being, and the benefits of establishing a healthy sleep routine.'),
+      (1, 'The Benefits of Outdoor Activities for Physical and Mental Health', 'Engaging in outdoor activities offers numerous benefits for both physical and mental health. This article discusses the advantages of spending time outdoors, including improving cardiovascular health, reducing stress, and enhancing mood. It also provides suggestions for different types of outdoor activities, such as hiking, biking, and gardening, and tips for incorporating more outdoor time into your routine.'),
+      (2, 'The Importance of Critical Thinking Skills in Everyday Life', 'Critical thinking is the ability to analyze information objectively and make reasoned judgments. This blog post explores the importance of critical thinking skills in everyday life, including making informed decisions, solving problems, and evaluating information. It also offers tips for developing critical thinking skills, such as questioning assumptions, seeking diverse perspectives, and practicing reflective thinking.'),
+      (1, 'The Benefits of Sustainable Fashion and How to Make Eco-Friendly Choices', 'Sustainable fashion is about making clothing choices that are environmentally friendly and ethically produced. This article discusses the benefits of sustainable fashion, including reducing environmental impact, supporting fair labor practices, and promoting long-lasting quality. It also provides tips for making eco-friendly fashion choices, such as buying second-hand, choosing sustainable brands, and caring for your clothes properly.'),
+      (1, 'The Science of Happiness: What Makes Us Truly Happy', 'Happiness is a complex and subjective experience influenced by various factors. This blog post explores the science of happiness, including the role of genetics, relationships, and life circumstances. It also discusses strategies for increasing happiness, such as practicing gratitude, fostering social connections, and finding meaning and purpose in life.'),
+      (2, 'The Benefits of a Plant-Based Diet and How to Get Started', 'A plant-based diet focuses on consuming whole, plant-derived foods and offers numerous health benefits. This article discusses the advantages of a plant-based diet, including reducing the risk of chronic diseases, improving digestion, and supporting weight management. It also provides tips for transitioning to a plant-based diet, such as meal planning, finding plant-based recipes, and ensuring nutritional balance.'),
+      (2, 'How to Develop Effective Communication Skills', 'Effective communication is essential for personal and professional success. This blog post offers practical tips for developing communication skills, including active listening, clear and concise speaking, and non-verbal communication. It also discusses the importance of empathy, feedback, and adapting your communication style to different situations and audiences.'),
+      (1, 'The Importance of Financial Literacy and How to Improve It', 'Financial literacy is the ability to understand and manage your finances effectively. This article explores the importance of financial literacy, including making informed financial decisions, planning for the future, and avoiding debt. It also provides tips for improving financial literacy, such as taking financial education courses, reading personal finance books, and seeking advice from financial professionals.'),
+      (2, 'The Benefits of Minimalism and How to Embrace a Simpler Lifestyle', 'Minimalism is about living with less and focusing on what truly matters. This blog post discusses the benefits of minimalism, including reduced stress, increased focus, and greater financial freedom. It also provides practical tips for embracing minimalism, such as decluttering your space, being mindful of your purchases, and prioritizing experiences over material possessions.');
+
+    INSERT INTO comments (post_id, name, email, body) VALUES
+      (32, 'Alice Smith', 'alice.smith@example.com', 'Great article! I learned a lot about JavaScript closures. Thanks for sharing!'),
+      (32, 'Alice Smith', 'alice.smith@example.com', 'Great article! I learned a lot about JavaScript closures. Thanks for sharing!'),
+      (1, 'Alice Smith', 'alice.smith@example.com', 'Great article! I learned a lot about JavaScript closures. Thanks for sharing!'),
+      (2, 'Bob Johnson', 'bob.johnson@example.com', 'Very informative post on SEO. Ill definitely use these tips to improve my websites ranking.'),
+      (3, 'Charlie Brown', 'charlie.brown@example.com', 'This introduction to machine learning was exactly what I needed. Clear and concise.'),
+      (4, 'Dana White', 'dana.white@example.com', 'Cybersecurity is so important these days. Thanks for highlighting the key points.'),
+      (5, 'Evan Davis', 'evan.davis@example.com', 'Excellent time management strategies. I cant wait to implement them in my daily routine.'),
+      (6, 'Fiona Green', 'fiona.green@example.com', 'Cryptocurrency and blockchain can be confusing, but this post made it much clearer.'),
+      (7, 'George Harris', 'george.harris@example.com', 'Exercise really does help with mental health. Great read!'),
+      (8, 'Hannah Clark', 'hannah.clark@example.com', 'Cloud computing has so many benefits. Thanks for breaking it down.'),
+      (9, 'Ivy Lewis', 'ivy.lewis@example.com', 'AI in healthcare is fascinating. Looking forward to more advancements in this field.'),
+      (10, 'Jack Robinson', 'jack.robinson@example.com', 'Building a remote team can be challenging. These tips will be very useful.'),
+      (1, 'Kelly Martinez', 'kelly.martinez@example.com', 'Mindfulness has changed my life. Thanks for sharing these techniques.'),
+      (2, 'Liam Moore', 'liam.moore@example.com', 'Python is so powerful for data science. Great introductory post.'),
+      (3, 'Mia Thompson', 'mia.thompson@example.com', 'Renewable energy is the future. Thanks for this insightful article.'),
+      (4, 'Noah Wilson', 'noah.wilson@example.com', 'Social media has its pros and cons. This was a balanced view.'),
+      (5, 'Olivia Anderson', 'olivia.anderson@example.com', 'Personal finance management is crucial. These strategies are very helpful.'),
+      (6, 'Paul Walker', 'paul.walker@example.com', 'Understanding habit formation can really help build better routines.'),
+      (7, 'Quinn Allen', 'quinn.allen@example.com', 'IoT has so many applications. This was a great overview.'),
+      (8, 'Ryan Scott', 'ryan.scott@example.com', 'Learning a second language has so many benefits. Thanks for sharing.'),
+      (9, 'Sophie Young', 'sophie.young@example.com', 'E-commerce trends are changing rapidly. Great insights.'),
+      (10, 'Tommy King', 'tommy.king@example.com', 'Content marketing is key to engagement. Thanks for the strategy tips.'),
+      (1, 'Uma Carter', 'uma.carter@example.com', 'Emotional intelligence is so important in leadership. Great read.'),
+      (2, 'Victor Turner', 'victor.turner@example.com', 'Investing in the stock market can be intimidating. This guide was very helpful.'),
+      (3, 'Wendy Perez', 'wendy.perez@example.com', 'Public speaking skills can really boost your career. Thanks for the tips.'),
+      (4, 'Xander Ramirez', 'xander.ramirez@example.com', 'Big data is transforming business. Great explanation of its benefits.'),
+      (5, 'Yara Morgan', 'yara.morgan@example.com', 'Gratitude can change your perspective. Thanks for the practical tips.'),
+      (6, 'Zane Cook', 'zane.cook@example.com', 'The evolution of AI is fascinating. Thanks for this detailed overview.'),
+      (7, 'Aaron Bell', 'aaron.bell@example.com', 'Developing a growth mindset is crucial for success. Great tips.'),
+      (8, 'Bella Foster', 'bella.foster@example.com', 'Work-life balance is so important. These strategies are very helpful.'),
+      (9, 'Caleb Brooks', 'caleb.brooks@example.com', 'Sustainable living is essential. Thanks for the practical advice.'),
+      (10, 'Diana Murphy', 'diana.murphy@example.com', 'Mind mapping is a great tool. Thanks for the detailed guide.'),
+      (1, 'Eli Nguyen', 'eli.nguyen@example.com', 'Quantum computing has so much potential. Thanks for the insights.'),
+      (2, 'Faith Hayes', 'faith.hayes@example.com', 'Diversity and inclusion are crucial in the workplace. Great article.'),
+      (3, 'Grace Collins', 'grace.collins@example.com', 'Reading every day has changed my life. Thanks for the encouragement.'),
+      (4, 'Henry Simmons', 'henry.simmons@example.com', 'Creating a budget is the first step to financial stability. Great tips.'),
+      (5, 'Isabella Ross', 'isabella.ross@example.com', 'Nutrition is key to good health. Thanks for the comprehensive guide.'),
+      (6, 'James Ward', 'james.ward@example.com', 'Meditation has so many benefits. Thanks for the beginner tips.'),
+      (7, 'Kylie Adams', 'kylie.adams@example.com', 'Technology is transforming education. Great insights into its impact.'),
+      (8, 'Logan Turner', 'logan.turner@example.com', 'Building resilience is so important. Thanks for the practical advice.'),
+      (9, 'Mason Nelson', 'mason.nelson@example.com', 'Volunteering has so many benefits. Thanks for the motivation to get involved.'),
+      (10, 'Nina Scott', 'nina.scott@example.com', 'Setting boundaries is essential for healthy relationships. Great advice.'),
+      (1, 'Owen Evans', 'owen.evans@example.com', 'Digital marketing is crucial. Thanks for the comprehensive guide.'),
+      (2, 'Paige Baker', 'paige.baker@example.com', 'Sleep is so important for health. Thanks for the tips on improving sleep quality.'),
+      (3, 'Quincy Phillips', 'quincy.phillips@example.com', 'Outdoor activities are great for health. Thanks for the suggestions.'),
+      (4, 'Riley Campbell', 'riley.campbell@example.com', 'Critical thinking is essential. Thanks for the tips on how to develop it.'),
+      (5, 'Samantha Mitchell', 'samantha.mitchell@example.com', 'Sustainable fashion is so important. Thanks for the practical tips.'),
+      (6, 'Tyler Perez', 'tyler.perez@example.com', 'The science of happiness is fascinating. Thanks for sharing these strategies.'),
+      (7, 'Uma Cooper', 'uma.cooper@example.com', 'A plant-based diet has so many benefits. Thanks for the guide on getting started.'),
+      (8, 'Violet Reed', 'violet.reed@example.com', 'Communication skills are so important. Thanks for the practical tips.'),
+      (9, 'Will Harris', 'will.harris@example.com', 'Financial literacy is crucial. Thanks for the tips on how to improve it.'),
+      (10, 'Xenia Gray', 'xenia.gray@example.com', 'Minimalism has so many benefits. Thanks for the guide on embracing a simpler lifestyle.');
+kind: ConfigMap
+metadata:
+  labels:
+    io.kompose.service: db
+  name: db-cm1
