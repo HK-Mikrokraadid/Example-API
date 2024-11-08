@@ -16,6 +16,7 @@ require('dotenv').config();
 const app = express();
 
 app.use(cors());
+app.set('trust proxy', true);
 
 morgan.token('custom', (req, res) => {
   const safeBody = { ...req.body };
@@ -29,7 +30,7 @@ morgan.token('custom', (req, res) => {
     url: req.originalUrl,
     status: res.statusCode,
     responseTime: res.getHeader('X-Response-Time') || '-',
-    ip: req.ip,
+    ip: req.headers['x-forwarded-for'] || req.ip,
     userAgent: req.headers['user-agent'],
     body: Object.keys(safeBody).length ? JSON.stringify(safeBody) : undefined,
   };
