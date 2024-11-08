@@ -2,6 +2,7 @@ const { createLogger, format, transports } = require('winston');
 const { combine, timestamp, errors, json } = format;
 // const WinstonLogStash = require('winston3-logstash-transport');
 const LogstashTransport = require("winston-logstash/lib/winston-logstash-latest");
+const config = require('../../config');
 
 // Kohandatud logi formaat
 /* const logFormat = printf(({ level, message, timestamp, stack }) => {
@@ -26,7 +27,7 @@ const logger = createLogger({
     new transports.File({ filename: './logs/errors.log', level: 'error' }),
     new LogstashTransport({
       mode: 'tcp',
-      host: '10.168.60.250',
+      host: config.elasticIp,
       port: 50000,
       ssl_enable: false,
       max_connect_retries: -1,

@@ -13,6 +13,7 @@ const config = {
       password: process.env.MYSQL_PASSWORD,
       port: Number(process.env.MYSQL_PORT),
     },
+    elasticIp: process.env.ELASTIC_IP,
   },
   test: {
     port: Number(process.env.PORT),
@@ -25,6 +26,7 @@ const config = {
       password: process.env.MYSQL_TEST_PASSWORD,
       port: Number(process.env.MYSQL_TEST_PORT),
     },
+    elasticIp: process.env.ELASTIC_IP,
   },
 };
 

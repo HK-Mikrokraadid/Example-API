@@ -18,6 +18,12 @@ const app = express();
 app.use(cors());
 
 morgan.token('custom', (req, res) => {
+  const safeBody = { ...req.body };
+
+  if (safeBody.password) {
+    safeBody.password = '[FILTERED]';
+  }
+
   const logData = {
     method: req.method,
     url: req.originalUrl,
@@ -25,8 +31,7 @@ morgan.token('custom', (req, res) => {
     responseTime: res.getHeader('X-Response-Time') || '-',
     ip: req.ip,
     userAgent: req.headers['user-agent'],
-    // Filter sensitive fields from req.body
-    body: req.body && JSON.stringify({ ...req.body, password: '[FILTERED]' }),
+    body: Object.keys(safeBody).length ? JSON.stringify(safeBody) : undefined,
   };
 
   return JSON.stringify(logData);
