@@ -16,9 +16,28 @@ require('dotenv').config();
 const app = express();
 
 app.use(cors());
+
+morgan.token('custom', (req, res) => {
+  const logData = {
+    method: req.method,
+    url: req.originalUrl,
+    status: res.statusCode,
+    responseTime: res.getHeader('X-Response-Time') || '-',
+    ip: req.ip,
+    userAgent: req.headers['user-agent'],
+    // Filter sensitive fields from req.body
+    body: req.body && JSON.stringify({ ...req.body, password: '[FILTERED]' }),
+  };
+
+  return JSON.stringify(logData);
+});
+
+
 // eslint-disable-next-line no-undef
 if (process.env.NODE_ENV !== 'test') {
-  app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) }}));
+  app.use(morgan(':custom', {
+    stream: { write: message => logger.info(message.trim()) }
+  }));
 }
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

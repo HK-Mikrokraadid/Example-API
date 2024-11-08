@@ -26,7 +26,7 @@ const logger = createLogger({
     new transports.File({ filename: './logs/errors.log', level: 'error' }),
     new LogstashTransport({
       mode: 'tcp',
-      host: '10.168.10.225',
+      host: '10.168.60.250',
       port: 50000,
       ssl_enable: false,
       max_connect_retries: -1,
