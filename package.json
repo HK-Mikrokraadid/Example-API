@@ -26,7 +26,8 @@
     "nyc": "^17.0.0",
     "swagger-ui-express": "^5.0.1",
     "winston": "^3.13.0",
-    "winston-logstash": "^1.2.1"
+    "winston-logstash": "^1.2.1",
+    "express-rate-limit": "^7.4.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.5.0",
